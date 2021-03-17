@@ -91,7 +91,7 @@ RSpec.describe User, type: :model do
   end
 
   describe '#reset_session_token!' do 
-    let (:user) { User.new(email: 'user@email.com',
+    let (:user) { User.new(email: 'user2@email.com',
                                      password: 'password',
                           session_token: 'sample token')}
     it 'resets the user\'s session token' do 
