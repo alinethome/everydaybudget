@@ -28,7 +28,7 @@ RSpec.describe User, type: :model do
     end
 
     context 'given the correct password' do 
-      it 'return true' do 
+      it 'returns true' do 
         expect(user_with_pass.is_password?("password")).to be true
       end
     end
