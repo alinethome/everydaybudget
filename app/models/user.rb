@@ -3,6 +3,15 @@ class User < ApplicationRecord
 
   after_initialize :ensure_session_token
 
+  def self.find_by_credentials(email, password)
+    # requires both the correct email and password to avoid giving 
+    # unecessary information in case of mismatching email and password
+    user = User.find_by(email: email)
+    user = nil if user && !user.is_password?(password)
+
+    user
+  end
+
   def password=(password)
     @password = password
 

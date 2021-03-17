@@ -1,6 +1,33 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
+  describe '::find_by_credentials' do
+    before(:all) do 
+      user = User.new(email: 'user@email.com', password: 'password')
+      user.save
+    end
+
+    context 'given a nonexistent email' do 
+      it 'returns nil' do 
+        expect(User.find_by_credentials('notauser@email.com', 'password')).to be_nil
+      end
+    end
+
+    context 'given the correct credentials' do 
+      it 'returns the user to whom those credentials belong' do 
+        user = User.find_by(email: 'user@email.com')
+        expect(User.find_by_credentials('user@email.com', 
+                                        'password').id).to eq(user.id)
+      end
+    end
+
+    context 'given an existing email but the wrong password' do 
+      it 'returns nil' do 
+        expect(User.find_by_credentials('user@email.com', 'notpassword')).to be_nil
+      end
+    end
+  end
+
   describe '#password=' do 
     let (:user_with_pass) { User.new(email: 'user@email.com',
                                      password: 'password')}
