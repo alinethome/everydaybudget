@@ -33,4 +33,53 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  describe '#ensure_session_token' do 
+    let (:user) { User.new(email: 'user@email.com',
+                                     password: 'password')}
+
+    context 'given a user with no session token' do 
+      it 'assigns a session token' do 
+        user.session_token = nil
+        user.ensure_session_token
+
+        expect(user.session_token).to_not be_nil
+      end
+    end
+
+    context 'given a user with a session token' do 
+      it 'does not change the token' do 
+        sample_token = "sample token"
+        user.session_token = sample_token
+
+        expect(user.session_token).to eq(sample_token)
+      end
+    end
+
+    context 'on a new user' do 
+      it 'is run on initialisation to assign them a token' do 
+        expect(user.session_token).to_not be_nil
+      end
+    end
+  end
+
+  describe '#reset_session_token!' do 
+    let (:user) { User.new(email: 'user@email.com',
+                                     password: 'password',
+                          session_token: 'sample token')}
+    it 'resets the user\'s session token' do 
+      old_token = user.session_token
+      user.reset_session_token!
+
+      expect(user.session_token).to_not eq(old_token)
+    end
+
+    it 'persists the change' do 
+      user.save
+      old_token = user.session_token
+      user.reset_session_token!
+      
+      expect(User.find(user.id).session_token).to_not eq(old_token)
+    end
+  end
 end

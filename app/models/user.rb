@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   attr_reader :password
 
+  after_initialize :ensure_session_token
+
   def password=(password)
     @password = password
 
@@ -9,5 +11,14 @@ class User < ApplicationRecord
 
   def is_password?(password)
     BCrypt::Password.new(self.password_digest).is_password?(password)
+  end
+
+  def ensure_session_token
+    self.session_token ||= SecureRandom.urlsafe_base64
+  end
+
+  def reset_session_token!
+    self.session_token = SecureRandom.urlsafe_base64
+    self.save
   end
 end
