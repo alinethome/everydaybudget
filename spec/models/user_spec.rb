@@ -1,6 +1,46 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
+  describe 'validations' do 
+    it { should validate_presence_of(:email) }
+    it { should validate_presence_of(:password_digest) }
+    it { should validate_presence_of(:session_token) }
+    it { should validate_uniqueness_of(:email) }
+    it { should validate_length_of(:password).is_at_least(8) }
+
+    context 'when given an invalid email' do 
+      it 'should raise be invalid' do 
+        bad_email1 = "useremail.net"
+        bad_email2 = "user@emailnet"
+        bad_email3 = "us/r@email.net"
+        bad_email4 = "user@em?il.net"
+        password = "password"
+
+        expect(User.new(email: bad_email1, password: password)).to_not be_valid
+        expect(User.new(email: bad_email2, password: password)).to_not be_valid
+        expect(User.new(email: bad_email3, password: password)).to_not be_valid
+        expect(User.new(email: bad_email4, password: password)).to_not be_valid
+      end
+
+      it 'should raise an error' do
+        bad_email1 = "useremail.net"
+        password = "password"
+        user = User.new(email: bad_email1, password: password) 
+        user.save
+
+        expect(user.errors.full_messages).
+          to include("Email is not a valid email address")
+      end
+    end
+
+    context 'when given a valid email' do 
+      it 'should be valid' do 
+        expect(User.new(email: 'good_email@email.com', 
+                        password: 'password')).to be_valid
+      end
+    end
+  end
+
   describe '::find_by_credentials' do
     before(:all) do 
       user = User.new(email: 'user@email.com', password: 'password')
@@ -102,7 +142,7 @@ RSpec.describe User, type: :model do
     end
 
     it 'persists the change' do 
-      user.save
+      user.save!
       old_token = user.session_token
       user.reset_session_token!
       
