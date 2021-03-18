@@ -2,6 +2,13 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
   describe 'validations' do 
+    subject(:user) { FactoryBot.build(:user) }
+
+    let(:bad_email1) { "useremail.net" }
+    let(:bad_email2) { "user@emailnet" }
+    let(:bad_email3) { "us/r@email.net" }
+    let(:bad_email4) { "user@em?il.net" }
+
     it { should validate_presence_of(:email) }
     it { should validate_presence_of(:password_digest) }
     it { should validate_presence_of(:session_token) }
@@ -10,22 +17,18 @@ RSpec.describe User, type: :model do
 
     context 'when given an invalid email' do 
       it 'should raise be invalid' do 
-        bad_email1 = "useremail.net"
-        bad_email2 = "user@emailnet"
-        bad_email3 = "us/r@email.net"
-        bad_email4 = "user@em?il.net"
         password = "password"
 
-        expect(User.new(email: bad_email1, password: password)).to_not be_valid
-        expect(User.new(email: bad_email2, password: password)).to_not be_valid
-        expect(User.new(email: bad_email3, password: password)).to_not be_valid
-        expect(User.new(email: bad_email4, password: password)).to_not be_valid
+        expect(FactoryBot.build(:user, email: bad_email1)).to_not be_valid
+        expect(FactoryBot.build(:user, email: bad_email2)).to_not be_valid
+        expect(FactoryBot.build(:user, email: bad_email3)).to_not be_valid
+        expect(FactoryBot.build(:user, email: bad_email4)).to_not be_valid
       end
 
       it 'should raise an error' do
         bad_email1 = "useremail.net"
         password = "password"
-        user = User.new(email: bad_email1, password: password) 
+        user = FactoryBot.build(:user, email: bad_email1) 
         user.save
 
         expect(user.errors.full_messages).
@@ -35,16 +38,18 @@ RSpec.describe User, type: :model do
 
     context 'when given a valid email' do 
       it 'should be valid' do 
-        expect(User.new(email: 'good_email@email.com', 
-                        password: 'password')).to be_valid
+        expect(user).to be_valid
       end
     end
   end
 
   describe '::find_by_credentials' do
     before(:all) do 
-      user = User.new(email: 'user@email.com', password: 'password')
-      user.save
+      @user = FactoryBot.create(:user)
+    end
+
+    after(:all) do 
+      @user.destroy
     end
 
     context 'given a nonexistent email' do 
@@ -55,23 +60,23 @@ RSpec.describe User, type: :model do
 
     context 'given the correct credentials' do 
       it 'returns the user to whom those credentials belong' do 
-        user = User.find_by(email: 'user@email.com')
-        expect(User.find_by_credentials('user@email.com', 
-                                        'password').id).to eq(user.id)
+        expect(User.find_by_credentials(@user.email, 
+                                        @user.password).id).to eq(@user.id)
       end
     end
 
     context 'given an existing email but the wrong password' do 
       it 'returns nil' do 
-        expect(User.find_by_credentials('user@email.com', 'notpassword')).to be_nil
+        expect(User.find_by_credentials(@user.email, 'notpassword')).to be_nil
       end
     end
   end
 
   describe '#password=' do 
-    let (:user_with_pass) { User.new(email: 'user@email.com',
-                                     password: 'password')}
     it 'sets the password' do 
+      password = "password"
+      user_with_pass = FactoryBot.build(:user, password: password)
+
       expect(user_with_pass.password).to eq("password")
     end
   end
@@ -102,8 +107,7 @@ RSpec.describe User, type: :model do
   end
 
   describe '#ensure_session_token' do 
-    let (:user) { User.new(email: 'user@email.com',
-                                     password: 'password')}
+    let (:user) { FactoryBot.build(:user) }
 
     context 'given a user with no session token' do 
       it 'assigns a session token' do 
@@ -131,9 +135,8 @@ RSpec.describe User, type: :model do
   end
 
   describe '#reset_session_token!' do 
-    let (:user) { User.new(email: 'user2@email.com',
-                                     password: 'password',
-                          session_token: 'sample token')}
+    let(:user) { FactoryBot.create(:user) }
+
     it 'resets the user\'s session token' do 
       old_token = user.session_token
       user.reset_session_token!
@@ -142,7 +145,6 @@ RSpec.describe User, type: :model do
     end
 
     it 'persists the change' do 
-      user.save!
       old_token = user.session_token
       user.reset_session_token!
       
