@@ -121,7 +121,7 @@ RSpec.describe Api::UsersController, type: :controller do
         expect(user.is_password?(@user.password)).to be true
       end
 
-      it 'resturns a json response' do
+      it 'returns a json response' do
         expect(response.header['Content-Type']).to include 'application/json'
       end
 
