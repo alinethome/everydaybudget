@@ -37,7 +37,6 @@ RSpec.describe Api::UsersController, type: :controller do
         post :create, 
           params: { user: { email: '', password: '' }},
           format: :json
-        expect(response.header['Content-Type'].should include 'application/json')
       end
     end
   end
