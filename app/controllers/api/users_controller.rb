@@ -8,6 +8,16 @@ class Api::UsersController < ApplicationController
       render json: @user.errors.full_messages, status: 422
     end
   end
+
+  def update
+    @user = selected_user
+
+    if @user.update(user_params) 
+      render :show
+    else
+      render json: @user.errors.full_messages, status: 400
+    end
+  end
   
   def destroy
     @user = selected_user

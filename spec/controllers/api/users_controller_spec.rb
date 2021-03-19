@@ -77,4 +77,57 @@ RSpec.describe Api::UsersController, type: :controller do
       end
     end
   end
+
+  describe 'PUT #update' do
+    before (:each) do 
+      @user = FactoryBot.create(:user)
+    end
+
+    after (:each) do 
+      @user.destroy
+    end
+
+    context 'with valid id and user params' do 
+      before (:each) do 
+        @new_user_attributes = FactoryBot.attributes_for(:user)
+        put :update, 
+          params: { id: @user.id, user: @new_user_attributes }, 
+          format: :json
+      end
+
+      it 'updates the user' do 
+        put :update, 
+          params: { id: @user.id, user: @new_user_attributes }, 
+          format: :json
+        user = User.find(@user.id)
+        expect(user.email).to eq(@new_user_attributes[:email])
+      end
+
+      it 'returns the updated user formatted as json' do 
+        expect(response).to render_template(:show)
+      end
+    end
+
+    context 'with invalid attributes' do 
+      before (:each) do 
+        put :update, 
+          params: { id: @user.id, user: { email: "", password: "" } }, 
+          format: :json
+      end
+
+      it 'does not modify the user' do 
+        user = User.find(@user.id)
+        expect(user.email).to eq(@user.email)
+        expect(user.is_password?(@user.password)).to be true
+      end
+
+      it 'resturns a json response' do
+        expect(response.header['Content-Type']).to include 'application/json'
+      end
+
+      it 'returns a bad request status code' do
+        expect(response).to have_http_status(400)
+      end
+    end
+  end
 end
