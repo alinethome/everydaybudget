@@ -130,4 +130,28 @@ RSpec.describe Api::UsersController, type: :controller do
       end
     end
   end
+
+  describe 'GET #show' do 
+    before(:all) do 
+      @user = FactoryBot.create(:user) 
+    end
+
+    after(:all) do 
+      @user.destroy
+    end
+
+    context 'given a valid id' do 
+      it 'renders the user as json' do 
+        get :show, params: { id: @user.id }, format: :json
+        expect(response).to render_template(:show)
+      end
+    end
+
+    context 'given an invalid id' do
+      it 'returns a json response' do
+        get :show, params: { id: -1 }
+        expect(response.header['Content-Type']).to include 'application/json'
+      end
+    end
+  end
 end

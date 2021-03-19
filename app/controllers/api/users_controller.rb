@@ -30,6 +30,16 @@ class Api::UsersController < ApplicationController
     end
   end
 
+  def show
+    @user = selected_user
+
+    if @user
+      render :show
+    else
+      render json: ['The user could not be found']
+    end
+  end
+
   private
 
   def selected_user
