@@ -16,6 +16,13 @@ RSpec.describe Api::UsersController, type: :controller do
           format: :json
         }.to change(User, :count).by(1)
       end
+
+      it 'logs in the newly created user' do
+        expect(subject).to receive(:sign_in!)
+        post :create,
+          params: { user: FactoryBot.attributes_for(:user) },
+          format: :json
+      end
     end
 
     context 'with invalid parameters' do 
