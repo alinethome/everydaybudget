@@ -35,8 +35,7 @@ RSpec.describe Api::UsersController, type: :controller do
 
       it 'returns a json response' do 
         post :create, 
-          params: { user: { email: '', password: '' }},
-          format: :json
+          params: { user: { email: '', password: '' }}
         expect(response.header['Content-Type']).to include 'application/json'
       end
     end
@@ -72,7 +71,7 @@ RSpec.describe Api::UsersController, type: :controller do
       end
 
       it 'returns a json response' do
-        delete :destroy, params: { id: -1 }, format: :json
+        delete :destroy, params: { id: -1 }
         expect(response.header['Content-Type']).to include 'application/json'
       end
     end
@@ -109,23 +108,25 @@ RSpec.describe Api::UsersController, type: :controller do
     end
 
     context 'with invalid attributes' do 
-      before (:each) do 
+      it 'does not modify the user' do 
         put :update, 
           params: { id: @user.id, user: { email: "", password: "" } }, 
           format: :json
-      end
-
-      it 'does not modify the user' do 
         user = User.find(@user.id)
         expect(user.email).to eq(@user.email)
         expect(user.is_password?(@user.password)).to be true
       end
 
       it 'returns a json response' do
+        put :update, 
+          params: { id: @user.id, user: { email: "", password: "" } }
         expect(response.header['Content-Type']).to include 'application/json'
       end
 
       it 'returns a bad request status code' do
+        put :update, 
+          params: { id: @user.id, user: { email: "", password: "" } }, 
+          format: :json
         expect(response).to have_http_status(400)
       end
     end
