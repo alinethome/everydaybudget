@@ -11,7 +11,21 @@ export const postUser = (user, token) => {
                 'password': user.password
             } 
         },
-        notheaders: { 'X-CSRF-Token': token }
+        headers: { 'X-CSRF-Token': token }
+    });
+};
+
+export const postSession = (user, token) => {
+    return $.ajax({
+        url: '/api/session/',
+        method: 'POST',
+        data: { 'user': 
+            { 
+                'email': user.email,
+                'password': user.password
+            } 
+        },
+        headers: { 'X-CSRF-Token': token }
     });
 };
 
