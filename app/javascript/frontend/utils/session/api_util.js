@@ -37,4 +37,13 @@ export const postSession = (user) => {
     });
 };
 
+export const deleteSession = () => {
+    let token = getToken();
+
+    return $.ajax({
+        url: '/api/session/',
+        method: 'DELETE',
+        headers: { 'X-CSRF-Token': token }
+    });
+};
 

@@ -114,4 +114,44 @@ describe('postSession', () => {
 });
 
 describe('deleteSession', () => {
+    const ajaxSpy = jest.spyOn($, 'ajax');
+    const token = 'token';
+    let metaElement;
+    
+    const lastAjaxCallArgs = (spy) => {
+        let calls = spy.mock.calls;
+        let last = calls.length - 1;
+
+        return calls[last][0];
+    };
+
+    beforeAll(() => {
+        metaElement = document.createElement("meta");
+        metaElement.name = 'csrf-token';
+        metaElement.content = token;
+        document.head.append(metaElement);
+    });
+
+    afterAll(() => {
+        metaElement.remove();
+    });
+
+    afterEach(() => {
+        jest.resetAllMocks();
+    });
+
+    test('should make a delete request', () => {
+        deleteSession();
+        expect(lastAjaxCallArgs(ajaxSpy)["method"]).toBe('DELETE');
+    });
+    
+    test('should make the request to the session api url', () => {
+        deleteSession();
+        expect(lastAjaxCallArgs(ajaxSpy)["url"]).toBe('/api/session/');
+    });
+
+    test('should include the csrf token in the request', () => {
+        deleteSession();
+        expect(lastAjaxCallArgs(ajaxSpy)["headers"]['X-CSRF-Token']).toBe(token);
+    });
 });
