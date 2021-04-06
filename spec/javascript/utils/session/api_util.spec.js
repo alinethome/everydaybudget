@@ -10,6 +10,7 @@ describe('postUser', () => {
         email,
         password
     }
+    let metaElement;
     
     const lastAjaxCallArgs = (spy) => {
         let calls = spy.mock.calls;
@@ -18,28 +19,39 @@ describe('postUser', () => {
         return calls[last][0];
     };
 
+    beforeAll(() => {
+        metaElement = document.createElement("meta");
+        metaElement.name = 'csrf-token';
+        metaElement.content = token;
+        document.head.append(metaElement);
+    });
+
+    afterAll(() => {
+        metaElement.remove();
+    });
+
     afterEach(() => {
         jest.resetAllMocks();
     });
 
     test('should send user data', () => {
-        postUser(user, token);
+        postUser(user);
         expect(lastAjaxCallArgs(ajaxSpy)["data"]["user"]["email"]).toBe(email)
         expect(lastAjaxCallArgs(ajaxSpy)["data"]["user"]["password"]).toBe(password)
     });
 
     test('should make a post request', () => {
-        postUser(user, token);
+        postUser(user);
         expect(lastAjaxCallArgs(ajaxSpy)["method"]).toBe('POST');
     });
 
     test('should make the request to the users api url', () => {
-        postUser(user, token);
+        postUser(user);
         expect(lastAjaxCallArgs(ajaxSpy)["url"]).toBe('/api/users/');
     });
 
     test('should include the csrf token in the request', () => {
-        postUser(user, token);
+        postUser(user);
         expect(lastAjaxCallArgs(ajaxSpy)["headers"]['X-CSRF-Token']).toBe(token);
     });
 });
@@ -53,6 +65,9 @@ describe('postSession', () => {
         email,
         password
     }
+    let metaElement;
+
+    jest.spyOn(document, 'getElementsByName').mockReturnValue([{ content: token }]);
     
     const lastAjaxCallArgs = (spy) => {
         let calls = spy.mock.calls;
@@ -61,28 +76,39 @@ describe('postSession', () => {
         return calls[last][0];
     };
 
+    beforeAll(() => {
+        metaElement = document.createElement("meta");
+        metaElement.name = 'csrf-token';
+        metaElement.content = token;
+        document.head.append(metaElement);
+    });
+
+    afterAll(() => {
+        metaElement.remove();
+    });
+
     afterEach(() => {
         jest.resetAllMocks();
     });
 
     test('should send user data', () => {
-        postSession(user, token);
+        postSession(user);
         expect(lastAjaxCallArgs(ajaxSpy)["data"]["user"]["email"]).toBe(email)
         expect(lastAjaxCallArgs(ajaxSpy)["data"]["user"]["password"]).toBe(password)
     });
 
     test('should make a post request', () => {
-        postSession(user, token);
+        postSession(user);
         expect(lastAjaxCallArgs(ajaxSpy)["method"]).toBe('POST');
     });
 
     test('should make the request to the session api url', () => {
-        postSession(user, token);
+        postSession(user);
         expect(lastAjaxCallArgs(ajaxSpy)["url"]).toBe('/api/session/');
     });
 
     test('should include the csrf token in the request', () => {
-        postSession(user, token);
+        postSession(user);
         expect(lastAjaxCallArgs(ajaxSpy)["headers"]['X-CSRF-Token']).toBe(token);
     });
 });

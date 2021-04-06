@@ -1,7 +1,13 @@
 import $ from 'jquery';
 
+const getToken = () => {
+    return document.querySelector('meta[name="csrf-token"]')
+        .getAttribute('content');
+};
 
-export const postUser = (user, token) => {
+export const postUser = (user) => {
+    let token = getToken();
+
     return $.ajax({
         url: '/api/users/',
         method: 'POST',
@@ -15,7 +21,9 @@ export const postUser = (user, token) => {
     });
 };
 
-export const postSession = (user, token) => {
+export const postSession = (user) => {
+    let token = getToken();
+
     return $.ajax({
         url: '/api/session/',
         method: 'POST',
