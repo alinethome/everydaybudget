@@ -17,7 +17,7 @@ const postUser = jest.spyOn(API, 'postUser')
 
 describe('createNewUser', () => {
     afterEach(() => {
-        jest.resetAllMocks();
+        jest.clearAllMocks();
     });
 
     test('the store should receive an action to update current user', () => {
