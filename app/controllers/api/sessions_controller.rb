@@ -10,6 +10,11 @@ class Api::SessionsController < ApplicationController
     end
   end
 
+  def destroy
+    sign_out!(current_user)
+    head :no_content
+  end
+
   private
 
   def user_params

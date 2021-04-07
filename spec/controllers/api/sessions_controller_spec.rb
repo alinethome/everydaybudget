@@ -51,4 +51,21 @@ RSpec.describe Api::SessionsController, type: :controller do
       end
     end
   end
+
+  describe "DELETE #destroy" do 
+    before(:each) do 
+      @user = FactoryBot.create(:user) 
+      session[:session_token] = @user.session_token
+    end
+
+    it 'signs the user out' do
+      delete :destroy, params: { id: @user.id }
+      expect(session[:session_token]).to be_nil
+    end
+
+    it 'sends a 204 response' do
+      delete :destroy, params: { id: @user.id }
+      expect(response).to have_http_status(204)
+    end
+  end
 end
