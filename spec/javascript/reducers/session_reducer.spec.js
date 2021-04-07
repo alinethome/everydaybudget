@@ -1,5 +1,6 @@
 import sessionReducer from 'frontend/reducers/session_reducer.js';
-import { RECEIVE_CURRENT_USER } from 'frontend/actions/session.js';
+import { RECEIVE_CURRENT_USER, 
+    LOGOUT_CURRENT_USER } from 'frontend/actions/session.js';
 
 describe('session reducer', () => {
     const id = 1;
@@ -24,6 +25,16 @@ describe('session reducer', () => {
             const state = { current_user: null }
 
             expect(sessionReducer(state, action).current_user).toEqual(user);
+        });
+    });
+
+    describe('given an action with the LOGOUT_CURRENT_USER', () => {
+        test('should return a new state with a null current user', () =>{
+            const user = { id, email }
+            const action = { type: LOGOUT_CURRENT_USER }
+            const state = { current_user: user }
+
+            expect(sessionReducer(state, action).current_user).toEqual(null);
         });
     });
 });

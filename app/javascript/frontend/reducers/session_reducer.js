@@ -1,5 +1,6 @@
 import {
-    RECEIVE_CURRENT_USER, createNewUser 
+    RECEIVE_CURRENT_USER, createNewUser,
+    LOGOUT_CURRENT_USER
 } from '../actions/session.js';
 
 const nullSession = {
@@ -11,6 +12,8 @@ const sessionReducer = (state = nullSession, action) => {
     switch(action.type) {
         case RECEIVE_CURRENT_USER: 
             return { current_user: action.user };
+        case LOGOUT_CURRENT_USER:
+            return { current_user: null };
         default:
             return state;
     };
