@@ -42,6 +42,15 @@ describe('createNewUser', () => {
             expect(store.getActions()).toEqual(expectedActions)
         );
     });
+
+    test('should call postUser', () => {
+        const store = mockStore({ session: { current_user: {} } });
+        const user = { email: 'anemail@email.com', password: 'password' }
+
+        return store.dispatch(createNewUser(user)).then(() => 
+            expect(postUser.mock.calls.length).toBeGreaterThan(0)
+        );
+    });
 });
 
 describe('logout', () => {
@@ -64,7 +73,7 @@ describe('logout', () => {
         const store = mockStore({ session: { current_user: {} } });
 
         return store.dispatch(logout()).then(() => 
-            expect(deleteSession.mock.calls).toBeTruthy()
+            expect(deleteSession.mock.calls.length).toBeGreaterThan(0)
         );
     });
 });
