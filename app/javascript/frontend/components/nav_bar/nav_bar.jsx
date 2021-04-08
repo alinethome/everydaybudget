@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const NavBar = ({ logout, currentUser }) => {
     let sessionTools;
@@ -8,6 +9,10 @@ const NavBar = ({ logout, currentUser }) => {
            { currentUser.email }
            <button onClick={ logout }>Logout</button>
        </div>);
+    } else {
+        sessionTools = (<div>
+            <Link to="/register">Sign up</Link>
+        </div>);
     }
 
     return sessionTools;
