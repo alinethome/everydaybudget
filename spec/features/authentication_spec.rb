@@ -1,6 +1,14 @@
 require 'rails_helper'
 
 feature 'the signup process', js: true do
+  before do
+      ActionController::Base.allow_forgery_protection = true
+  end
+
+  after do
+      ActionController::Base.allow_forgery_protection = false
+  end
+
   scenario 'has a registration page' do
     visit '/#/register'
     expect(page).to have_content 'Sign Up for EverydayBudget'
@@ -14,6 +22,33 @@ feature 'the signup process', js: true do
     fill_in'Password:', with: user[:password]
     click_button('Sign up!')
 
-    expect(current_path).to eq('/');
+    expect(react_path).to eq('/register');
   end
+
+  scenario 'displays the user\'s email after a successful signup' do
+    user = FactoryBot.attributes_for(:user)
+
+    visit '/#/register'
+    fill_in'Email:', with: user[:email]
+    fill_in'Password:', with: user[:password]
+    click_button('Sign up!')
+
+    expect(page).to have_content user[:email]
+  end
+
+  scenario 'display a logout button after a successful signup' do
+    user = FactoryBot.attributes_for(:user)
+
+    visit '/#/register'
+    fill_in'Email:', with: user[:email]
+    fill_in'Password:', with: user[:password]
+    click_button('Sign up!')
+
+    expect(page).to have_content 'Logout'
+  end
+end
+
+def react_path
+  url = evaluate_script('document.location.href')
+  react_path = url.split('#')[1]
 end
