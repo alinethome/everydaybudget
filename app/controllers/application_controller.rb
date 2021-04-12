@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  helper_method :current_user
+
   def sign_in!(user)
     session[:session_token] = user.session_token
   end
