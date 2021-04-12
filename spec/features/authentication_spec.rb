@@ -10,25 +10,25 @@ feature 'the signup process', js: true do
   end
 
   scenario 'has a registration page' do
-    visit '/#/register'
+    visit '/#/signup'
     expect(page).to have_content 'Sign Up for EverydayBudget'
   end
 
   scenario 'redirects a user to the home page after a successful signup' do 
     user = FactoryBot.attributes_for(:user)
 
-    visit '/#/register'
+    visit '/#/signup'
     fill_in'Email:', with: user[:email]
     fill_in'Password:', with: user[:password]
     click_button('Sign up!')
 
-    expect(react_path).to eq('/register');
+    expect(react_path).to eq('/signup');
   end
 
   scenario 'displays the user\'s email after a successful signup' do
     user = FactoryBot.attributes_for(:user)
 
-    visit '/#/register'
+    visit '/#/signup'
     fill_in'Email:', with: user[:email]
     fill_in'Password:', with: user[:password]
     click_button('Sign up!')
@@ -39,7 +39,7 @@ feature 'the signup process', js: true do
   scenario 'display a logout button after a successful signup' do
     user = FactoryBot.attributes_for(:user)
 
-    visit '/#/register'
+    visit '/#/signup'
     fill_in'Email:', with: user[:email]
     fill_in'Password:', with: user[:password]
     click_button('Sign up!')

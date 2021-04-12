@@ -10,7 +10,7 @@ const Root = ({ store }) => (
         <HashRouter>
             <div>
                 <Route path='/' component={ NavBarContainer } />
-                <Route path='/register' component={ SignUpContainer } />
+                <Route path='/signup' component={ SignUpContainer } />
                 <Route path='/login' component={ SignInContainer } />
             </div>
         </HashRouter>
