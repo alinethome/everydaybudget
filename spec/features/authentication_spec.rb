@@ -9,6 +9,11 @@ feature 'the signup process', js: true do
       ActionController::Base.allow_forgery_protection = false
   end
 
+  scenario 'it has a link to the registration page' do
+    visit '/#/'
+    expect(page).to have_link("Sign up", href: '#/signup')
+  end
+
   scenario 'has a registration page' do
     visit '/#/signup'
     expect(page).to have_content 'Sign Up for EverydayBudget'
