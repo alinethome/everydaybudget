@@ -1,8 +1,9 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { HashRouter, Route } from 'react-router-dom';
-import SignUpContainer from './session/sign_up_container.jsx';
-import SignInContainer from './session/sign_in_container.jsx';
+// import SignUpContainer from './session/sign_up_container.jsx';
+// import SignInContainer from './session/sign_in_container.jsx';
+import UserFormContainer from './session/user_form_container.jsx';
 import NavBarContainer from './nav_bar/nav_bar_container.jsx';
 
 const Root = ({ store }) => (
@@ -10,8 +11,10 @@ const Root = ({ store }) => (
         <HashRouter>
             <div>
                 <Route path='/' component={ NavBarContainer } />
-                <Route path='/signup' component={ SignUpContainer } />
-                <Route path='/login' component={ SignInContainer } />
+                <Route path='/signup' 
+                    render={ () => <UserFormContainer formType="signup" /> } />
+                <Route path='/login' 
+                    render={ () => <UserFormContainer formType="login" /> } />
             </div>
         </HashRouter>
     </Provider>

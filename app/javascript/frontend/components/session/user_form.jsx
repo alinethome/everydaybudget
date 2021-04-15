@@ -31,7 +31,7 @@ class UserForm extends React.Component {
     render() {
         return (
             <form>
-                <h1>Sign Up for EverydayBudget</h1>
+                <h1>{ this.props.formTitle }</h1>
                 <label>Email:
                     <input type="text" 
                         value={ this.state.email }
@@ -43,7 +43,7 @@ class UserForm extends React.Component {
                         onChange={ this.handleInput('password') }/>
                 </label>
                 <input type="submit" 
-                    value="Sign up!"
+                    value={ this.props.buttonText }
                     onClick={ this.handleSubmit } />
             </form>
         );
