@@ -12,6 +12,7 @@ const NavBar = ({ logout, currentUser }) => {
     } else {
         sessionTools = (<div>
             <Link to="/signup">Sign up</Link>
+            <Link to="/login">Log in</Link>
         </div>);
     }
 

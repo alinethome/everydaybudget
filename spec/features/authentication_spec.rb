@@ -65,6 +65,11 @@ feature 'the log in process', js: true do
       @user.destroy
   end
 
+  scenario 'it has a link to the login page' do
+    visit '/#/'
+    expect(page).to have_link("Log in", href: '#/login')
+  end
+
   scenario 'has a log in page' do
     visit '/#/login'
     expect(page).to have_content 'Log In'
