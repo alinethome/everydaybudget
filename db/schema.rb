@@ -10,10 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_16_235823) do
+ActiveRecord::Schema.define(version: 2021_04_30_171002) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "budget_items", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "name", null: false
+    t.string "type", null: false
+    t.boolean "is_recurring", default: false, null: false
+    t.string "recur_period"
+    t.datetime "date", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["date"], name: "index_budget_items_on_date"
+    t.index ["type"], name: "index_budget_items_on_type"
+    t.index ["user_id"], name: "index_budget_items_on_user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", null: false
