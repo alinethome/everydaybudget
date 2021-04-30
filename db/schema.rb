@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_30_174721) do
+ActiveRecord::Schema.define(version: 2021_04_30_183131) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,11 +20,12 @@ ActiveRecord::Schema.define(version: 2021_04_30_174721) do
     t.string "name", null: false
     t.string "type", null: false
     t.boolean "is_recurring", default: false, null: false
-    t.string "recur_period"
+    t.integer "recur_period"
     t.datetime "date", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.float "amount", null: false
+    t.string "recur_unit"
     t.index ["date"], name: "index_budget_items_on_date"
     t.index ["type"], name: "index_budget_items_on_type"
     t.index ["user_id"], name: "index_budget_items_on_user_id"
