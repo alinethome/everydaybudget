@@ -2,11 +2,11 @@ require 'rails_helper'
 
 feature 'the signup process', js: true do
   before do
-      ActionController::Base.allow_forgery_protection = true
+    ActionController::Base.allow_forgery_protection = true
   end
 
   after do
-      ActionController::Base.allow_forgery_protection = false
+    ActionController::Base.allow_forgery_protection = false
   end
 
   scenario 'it has a link to the registration page' do
@@ -51,18 +51,40 @@ feature 'the signup process', js: true do
 
     expect(page).to have_content 'Logout'
   end
+
+  scenario 'stops displaying the log in link after a successful signup' do
+    user = FactoryBot.attributes_for(:user)
+
+    visit '/#/signup'
+    fill_in'Email:', with: user[:email]
+    fill_in'Password:', with: user[:password]
+    click_button('Sign Up!')
+
+    expect(page).to_not have_content 'Log In'
+  end
+
+  scenario 'stops displaying the sign up link after a successful signup' do
+    user = FactoryBot.attributes_for(:user)
+
+    visit '/#/signup'
+    fill_in'Email:', with: user[:email]
+    fill_in'Password:', with: user[:password]
+    click_button('Sign Up!')
+
+    expect(page).to_not have_content 'Sign Up'
+  end
 end
 
 feature 'the log in process', js: true do
   before do
-      ActionController::Base.allow_forgery_protection = true
+    ActionController::Base.allow_forgery_protection = true
 
-      @user = FactoryBot.create(:user)
+    @user = FactoryBot.create(:user)
   end
 
   after do
-      ActionController::Base.allow_forgery_protection = false
-      @user.destroy
+    ActionController::Base.allow_forgery_protection = false
+    @user.destroy
   end
 
   scenario 'it has a link to the login page' do
@@ -91,6 +113,64 @@ feature 'the log in process', js: true do
     click_button('Log In!')
 
     expect(page).to have_content 'Logout'
+  end
+
+  scenario 'stops displaying the log in link after a successful login' do
+    user = FactoryBot.attributes_for(:user)
+
+    visit '/#/login'
+    fill_in'Email:', with: @user.email
+    fill_in'Password:', with: @user.password
+    click_button('Log In!')
+
+    expect(page).to_not have_content 'Log In'
+  end
+
+  scenario 'stops displaying the sign up link after a successful login' do
+    user = FactoryBot.attributes_for(:user)
+
+    visit '/#/login'
+    fill_in'Email:', with: @user.email
+    fill_in'Password:', with: @user.password
+    click_button('Log In!')
+
+    expect(page).to_not have_content 'Sign Up'
+  end
+end
+
+feature 'the log out process', js: true do
+  before do
+    ActionController::Base.allow_forgery_protection = true
+    @user = FactoryBot.create(:user)
+  end
+
+  after do
+    ActionController::Base.allow_forgery_protection = false
+  end
+
+  before :each do 
+    visit '/#/login'
+    fill_in'Email:', with: @user.email
+    fill_in'Password:', with: @user.password
+    click_button('Log In!')
+    click_button('Logout')
+    puts page.html
+  end
+
+  scenario 'redirects to the log in page on clicking the logout button' do 
+    expect(react_path).to eq('/login');
+  end
+
+  scenario 'stops displaying the logout button on clicking the logout button' do
+    expect(page).to_not have_content 'Logout'
+  end
+
+  scenario 'displays a log in link on clicking the logout button' do
+    expect(page).to have_link("Log in", href: '#/login')
+  end
+
+  scenario 'displays a sign up link on clicking the logout button' do
+    expect(page).to have_link("Sign up", href: '#/signup')
   end
 end
 
