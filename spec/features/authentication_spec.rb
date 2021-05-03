@@ -154,10 +154,13 @@ feature 'the log out process', js: true do
     fill_in'Password:', with: @user.password
     click_button('Log In!')
     click_button('Logout')
-    puts page.html
   end
 
   scenario 'redirects to the log in page on clicking the logout button' do 
+    # Because the react_path script is run synchronously, if we test for it
+    # immediately after hitting the logout button, the test will fail
+    # therefore, we need to make the test wait manually 
+    sleep(5)
     expect(react_path).to eq('/login');
   end
 
