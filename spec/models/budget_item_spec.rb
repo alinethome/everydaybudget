@@ -11,4 +11,8 @@ RSpec.describe BudgetItem, type: :model do
     it { should validate_inclusion_of(:recur_unit)
          .in_array(["months", "weeks", "days"])}
   end
+
+  describe 'associations' do
+    it { should belong_to(:user) }
+  end
 end

@@ -43,6 +43,10 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe 'associations' do
+    it { should have_many(:budget_items).dependent(:destroy) }
+  end
+
   describe '::find_by_credentials' do
     before(:all) do 
       @user = FactoryBot.create(:user)
