@@ -9,6 +9,7 @@ RSpec.describe BudgetItem, type: :model do
     it { should validate_presence_of(:amount) }
     it { should validate_presence_of(:date) }
     it { should validate_inclusion_of(:recur_unit)
+         .in_array(["months", "days"])}
     it { should validate_inclusion_of(:type)
          .in_array(["income", "expense"])}
   end
