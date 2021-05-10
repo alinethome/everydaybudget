@@ -10,7 +10,8 @@ class User < ApplicationRecord
   validates :password, length: { minimum: 8}, allow_nil: true
   validate :email_is_well_formed
 
-  has_many :budget_items, dependent: :destroy
+  has_many :recurring_items, dependent: :destroy
+  has_many :non_recurring_items, dependent: :destroy
 
   after_initialize :ensure_session_token
 

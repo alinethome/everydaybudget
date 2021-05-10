@@ -1,6 +1,6 @@
 FactoryBot.define do
-  factory :budget_item do
-    name { "Budget Item" }
+  factory :non_recurring_item do
+    name { "Non Recurring Item" }
     amount { 10.00 }
     date { DateTime.now() }
     type { "expense" }
@@ -13,14 +13,5 @@ FactoryBot.define do
     trait :income do
       type { "income" }
     end
-
-    trait :recurring do
-      is_recurring { true }
-    end
-
-    trait :not_recurring do
-      is_recurring { false }
-    end
-    
   end
 end

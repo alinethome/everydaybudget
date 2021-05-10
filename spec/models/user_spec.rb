@@ -44,7 +44,8 @@ RSpec.describe User, type: :model do
   end
 
   describe 'associations' do
-    it { should have_many(:budget_items).dependent(:destroy) }
+    it { should have_many(:recurring_items).dependent(:destroy) }
+    it { should have_many(:non_recurring_items).dependent(:destroy) }
   end
 
   describe '::find_by_credentials' do

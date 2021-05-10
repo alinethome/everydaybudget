@@ -10,26 +10,40 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_03_173631) do
+ActiveRecord::Schema.define(version: 2021_05_10_172353) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "budget_items", force: :cascade do |t|
+  create_table "non_recurring_items", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "name", null: false
     t.string "type", null: false
-    t.boolean "is_recurring", default: false, null: false
-    t.integer "recur_period"
     t.datetime "date", null: false
+    t.float "amount", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.float "amount", null: false
-    t.string "recur_unit"
+    t.index ["date"], name: "index_non_recurring_items_on_date"
+    t.index ["type"], name: "index_non_recurring_items_on_type"
+    t.index ["user_id"], name: "index_non_recurring_items_on_user_id"
+  end
+
+  create_table "recurring_items", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "name", null: false
+    t.string "type", null: false
+    t.datetime "start_date", null: false
     t.datetime "end_date"
-    t.index ["date"], name: "index_budget_items_on_date"
-    t.index ["type"], name: "index_budget_items_on_type"
-    t.index ["user_id"], name: "index_budget_items_on_user_id"
+    t.integer "recur_period"
+    t.string "recur_unit_type", null: false
+    t.float "amount", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["end_date"], name: "index_recurring_items_on_end_date"
+    t.index ["recur_period"], name: "index_recurring_items_on_recur_period"
+    t.index ["start_date"], name: "index_recurring_items_on_start_date"
+    t.index ["type"], name: "index_recurring_items_on_type"
+    t.index ["user_id"], name: "index_recurring_items_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
