@@ -14,6 +14,9 @@ class MonthsUnitItem < RecurringItem
     end
   end
 
+  def instances_this_month
+  end
+
   private 
 
   def recur_day(current_month, current_year)
@@ -31,7 +34,20 @@ class MonthsUnitItem < RecurringItem
   end
 
   def recurs_in_month?(recur_day, month, year)
-    (months_from_start_date(month, year) % self.recur_period == 0) &&
-    (!self.end_date || self.end_date.day > recur_day)
+    month_matches_recur_period?(month, year) && (!self.end_date || 
+      end_date_after_recur_day?(month, year, recur_day))
+  end
+
+  def month_matches_recur_period?(month, year)
+    months_from_start_date(month, year) % self.recur_period == 0
+  end
+
+  def end_date_after_recur_day?(month, year, recur_day)
+    end_date_in_month?(month, year) &&
+      end_date_day_after_recur_day?(recur_day)
+  end
+
+  def end_date_day_after_recur_day?(recur_day)
+    self.end_date.day > recur_day
   end
 end
