@@ -16,6 +16,18 @@ class BudgetItem < ApplicationRecord
     raise NotImplementedError
   end
 
+  def total_monthly_amount
+    instances_this_month = self.instances_this_month
+
+    return 0 if instances_this_month.empty?
+
+    if self.type == "expense"
+      -self.amount * instances_this_month.length
+    else
+      self.amount * instances_this_month.length
+    end
+  end
+
   private 
 
   def same_month?(date)

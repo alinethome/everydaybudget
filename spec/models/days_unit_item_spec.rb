@@ -347,4 +347,192 @@ RSpec.describe DaysUnitItem, type: :model do
       end
     end
   end
+
+  describe '#total_monthly_amount' do
+    before do 
+      # sets the date for testing to May 18th, 2021, at 1:00 am
+      # since we're going to be testing budget items with different 
+      # starting and ending dates, it'll be useful to keep the current date
+      # fixed
+      @current_month = 5 
+      @current_year = 2021
+      travel_to DateTime.new(@current_year,@current_month,18,1,0,0)
+    end
+
+    after do
+      travel_back
+    end
+
+    describe 'given an expense' do
+      describe 'if it has no end date' do
+        describe 'if it will not recur that month' do
+          it 'returns zero' do
+            set_start_date(item: expense_days_item, year: @current_year,
+                           month: 4, day: 30)
+            expense_days_item.recur_period = 32
+
+            expect(expense_days_item.total_monthly_amount).to eq(0)
+          end
+        end
+
+        describe 'if it will recur that month' do
+          it 'returns minus its amount times the recur instances' do
+            set_start_date(item: expense_days_item, year: @current_year,
+                           month: 4, day: 30)
+            expense_days_item.recur_period = 10
+            recur_instances = 3
+            amount = 13
+            expense_days_item.amount = amount
+
+            expect(expense_days_item.
+                   total_monthly_amount).to eq(-amount*recur_instances)
+          end
+        end
+
+        describe 'if its start date is in that month' do
+          it 'returns minus its amount times the recur instances' do
+            set_start_date(item: expense_days_item, year: @current_year,
+                           month: @current_month, day: 11)
+            expense_days_item.recur_period = 10
+            recur_instances = 3
+            amount = 29
+            expense_days_item.amount = amount
+
+            expect(expense_days_item.
+                   total_monthly_amount).to eq(-amount*recur_instances)
+          end
+        end
+      end
+
+      describe 'if its end date occurs earlier than the current month' do
+        it 'returns zero' do
+            set_start_date(item: expense_days_item, year: @current_year,
+                           month: 1, day: 11)
+            set_end_date(item: expense_days_item, year: @current_year,
+                         month: @current_month - 1, day: 30)
+            expense_days_item.recur_period = 17
+
+            expect(expense_days_item.
+                   total_monthly_amount).to eq(0)
+        end
+      end
+
+      describe 'if its end date occurs in the current month' do
+        describe 'if its end date occurs earlier than the first recur' do
+          it 'returns zero' do
+            set_start_date(item: expense_days_item, year: @current_year,
+                           month: @current_month - 1, day: 29)
+            set_end_date(item: expense_days_item, year: @current_year,
+                         month: @current_month, day: 15)
+            expense_days_item.recur_period = 17
+
+            expect(expense_days_item.
+                   total_monthly_amount).to eq(0)
+          end
+        end
+
+        describe 'if its end date occurs after the first recur' do
+          it 'returns minus its amount times the recur instances' do
+            set_start_date(item: expense_days_item, year: @current_year,
+                           month: @current_month - 1, day: 29)
+            set_end_date(item: expense_days_item, year: @current_year,
+                         month: @current_month, day: 10)
+            amount = 999
+            recur_instances = 1
+            expense_days_item.recur_period = 10
+            expense_days_item.amount = amount
+
+            expect(expense_days_item.
+                   total_monthly_amount).to eq(-amount*recur_instances)
+          end
+        end
+      end
+    end
+
+    describe 'given an income item' do
+      describe 'if it has no end date' do
+        describe 'if it will not recur that month' do
+          it 'returns zero' do
+            set_start_date(item: income_days_item, year: @current_year,
+                           month: 4, day: 30)
+            income_days_item.recur_period = 32
+
+            expect(income_days_item.total_monthly_amount).to eq(0)
+          end
+        end
+
+        describe 'if it will recur that month' do
+          it 'returns its amount times the recur instances' do
+            set_start_date(item: income_days_item, year: @current_year,
+                           month: 4, day: 30)
+            income_days_item.recur_period = 10
+            recur_instances = 3
+            amount = 13
+            income_days_item.amount = amount
+
+            expect(income_days_item.
+                   total_monthly_amount).to eq(amount*recur_instances)
+          end
+        end
+
+        describe 'if its start date is in that month' do
+          it 'returns its amount times the recur instances' do
+            set_start_date(item: income_days_item, year: @current_year,
+                           month: @current_month, day: 11)
+            income_days_item.recur_period = 10
+            recur_instances = 3
+            amount = 29
+            income_days_item.amount = amount
+
+            expect(income_days_item.
+                   total_monthly_amount).to eq(amount*recur_instances)
+          end
+        end
+      end
+
+      describe 'if its end date occurs earlier than the current month' do
+        it 'returns zero' do
+            set_start_date(item: income_days_item, year: @current_year,
+                           month: 1, day: 11)
+            set_end_date(item: income_days_item, year: @current_year,
+                         month: @current_month - 1, day: 30)
+            income_days_item.recur_period = 17
+
+            expect(income_days_item.
+                   total_monthly_amount).to eq(0)
+        end
+      end
+
+      describe 'if its end date occurs in the current month' do
+        describe 'if its end date occurs earlier than the first recur' do
+          it 'returns zero' do
+            set_start_date(item: income_days_item, year: @current_year,
+                           month: @current_month - 1, day: 29)
+            set_end_date(item: income_days_item, year: @current_year,
+                         month: @current_month, day: 15)
+            income_days_item.recur_period = 17
+
+            expect(income_days_item.
+                   total_monthly_amount).to eq(0)
+          end
+        end
+
+        describe 'if its end date occurs after the first recur' do
+          it 'returns its amount times the recur instances' do
+            set_start_date(item: income_days_item, year: @current_year,
+                           month: @current_month - 1, day: 29)
+            set_end_date(item: income_days_item, year: @current_year,
+                         month: @current_month, day: 10)
+            amount = 999
+            recur_instances = 1
+            income_days_item.recur_period = 10
+            income_days_item.amount = amount
+
+            expect(income_days_item.
+                   total_monthly_amount).to eq(amount*recur_instances)
+          end
+        end
+      end
+    end
+  end
 end

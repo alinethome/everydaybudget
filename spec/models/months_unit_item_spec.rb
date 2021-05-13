@@ -57,7 +57,7 @@ RSpec.describe MonthsUnitItem, type: :model do
               set_start_date(item: expense_months_item, year: @current_year,
                              month: 1, day: 30)
               set_end_date(item: expense_months_item, year: @current_year,
-                             month: 3, day: 1)
+                           month: 3, day: 1)
               expense_months_item.recur_period = 1 #month
 
               expect(expense_months_item.
@@ -72,8 +72,8 @@ RSpec.describe MonthsUnitItem, type: :model do
                                year: @current_year - 1, month: 7,
                                day: 4)
                 set_end_date(item: expense_months_item, 
-                               year: @current_year, month: @current_month,
-                               day: 3)
+                             year: @current_year, month: @current_month,
+                             day: 3)
                 expense_months_item.recur_period = 2 # months
 
                 expect(expense_months_item.
@@ -88,8 +88,8 @@ RSpec.describe MonthsUnitItem, type: :model do
                                year: @current_year - 1, month: 7,
                                day: start_day)
                 set_end_date(item: expense_months_item, 
-                               year: @current_year, month: @current_month,
-                               day: start_day + 1)
+                             year: @current_year, month: @current_month,
+                             day: start_day + 1)
                 expense_months_item.recur_period = 2 # months
 
                 expect(expense_months_item.
@@ -227,7 +227,7 @@ RSpec.describe MonthsUnitItem, type: :model do
               february = 2
               travel_to DateTime.new(@current_year,february,18,1,0,0)
               set_start_date(item: expense_months_item, year: @current_year,
-                            month: 1, day: 31)
+                             month: 1, day: 31)
               expense_months_item.recur_period = 1
 
               expect(expense_months_item.
@@ -239,7 +239,7 @@ RSpec.describe MonthsUnitItem, type: :model do
             it 'returns an array containing its start date\'s day' do
               start_day = 31
               set_start_date(item: expense_months_item, year: @current_year,
-                            month: 1, day: start_day)
+                             month: 1, day: start_day)
               expense_months_item.recur_period = 1
 
               expect(expense_months_item.
@@ -308,7 +308,7 @@ RSpec.describe MonthsUnitItem, type: :model do
               february = 2
               travel_to DateTime.new(@current_year,february,18,1,0,0)
               set_start_date(item: income_months_item, year: @current_year,
-                            month: 1, day: 31)
+                             month: 1, day: 31)
               income_months_item.recur_period = 1
 
               expect(income_months_item.
@@ -320,7 +320,7 @@ RSpec.describe MonthsUnitItem, type: :model do
             it 'returns an array containing its start date\'s day' do
               start_day = 31
               set_start_date(item: income_months_item, year: @current_year,
-                            month: 1, day: start_day)
+                             month: 1, day: start_day)
               income_months_item.recur_period = 1
 
               expect(income_months_item.
@@ -376,6 +376,192 @@ RSpec.describe MonthsUnitItem, type: :model do
           income_months_item.recur_period = 2
           expect(income_months_item.
                  instances_this_month).to eq([])
+        end
+      end
+    end
+  end
+
+  describe '#total_monthly_amount' do 
+    before :each do 
+      # sets the date for testing to May 18th, 2021, at 1:00 am
+      # since we're going to be testing budget items with different 
+      # starting and ending dates, it'll be useful to keep the current date
+      # fixed
+      @current_month = 5 
+      @current_year = 2021
+      @current_day = 18
+      travel_to DateTime.new(@current_year,@current_month,18,1,0,0)
+    end
+
+    after :each do
+      travel_back
+    end
+
+    describe 'given an expense' do
+      describe 'if it has no end date' do
+        describe 'if it will recur in that month' do
+          it 'will return minus the item\'s amount' do
+            amount = 17
+            set_start_date(item: expense_months_item, year: @current_year,
+                           month: 1, day: 31)
+            expense_months_item.amount = amount
+            expense_months_item.recur_period = 2
+
+            expect(expense_months_item.total_monthly_amount).to eq(-amount)
+          end
+        end
+
+        describe 'if its start date is in that month' do
+          it 'will return minus the item\'s amount' do
+            amount = 1082
+            set_start_date(item: expense_months_item, year: @current_year,
+                           month: @current_month, day: 31)
+            expense_months_item.amount = amount
+            expense_months_item.recur_period = 6
+
+            expect(expense_months_item.total_monthly_amount).to eq(-amount)
+          end
+        end
+
+        describe 'if it won\'t recur in that month' do
+          it 'will return zero' do
+            set_start_date(item: expense_months_item, year: @current_year - 1,
+                           month: 12, day: 28)
+            expense_months_item.amount = 65
+            expense_months_item.recur_period = 3
+
+            expect(expense_months_item.total_monthly_amount).to eq(0)
+          end
+        end
+      end
+
+      describe 'if it has an end date' do
+        describe 'if the end date is earlier than the current month' do
+          it 'will return zero' do 
+            set_start_date(item: expense_months_item, year: @current_year - 1,
+                           month: 12, day: 28)
+            set_end_date(item: expense_months_item, year: @current_year, 
+                         month: @current_month - 1, day: 30)
+            expense_months_item.amount = 999
+            expense_months_item.recur_period = 5
+
+            expect(expense_months_item.total_monthly_amount).to eq(0)
+          end
+        end
+
+        describe 'if the end date falls within the current month' do
+          describe 'if the end date falls before its recur day' do
+            it 'will return zero' do
+              recur_day = 23
+              set_start_date(item: expense_months_item, year: @current_year,
+                             month: 4, day: recur_day)
+              set_end_date(item: expense_months_item, year: @current_year, 
+                           month: @current_month, day: recur_day - 1)
+              expense_months_item.amount = 999
+              expense_months_item.recur_period = 1
+
+              expect(expense_months_item.total_monthly_amount).to eq(0)
+            end
+          end
+
+          describe 'if the end date falls after its recur day' do
+            it 'will return minus the item\'s amount' do 
+              recur_day = 23
+              amount = 32.5
+              set_start_date(item: expense_months_item, year: @current_year,
+                             month: 4, day: recur_day)
+              set_end_date(item: expense_months_item, year: @current_year, 
+                           month: @current_month, day: recur_day + 1)
+              expense_months_item.amount = amount
+              expense_months_item.recur_period = 1
+
+              expect(expense_months_item.total_monthly_amount).to eq(-amount)
+            end
+          end
+        end
+      end
+    end
+    describe 'given an income item' do
+      describe 'if it has no end date' do
+        describe 'if it will recur in that month' do
+          it 'will return the item\'s amount' do
+            amount = 17
+            set_start_date(item: income_months_item, year: @current_year,
+                           month: 1, day: 31)
+            income_months_item.amount = amount
+            income_months_item.recur_period = 2
+
+            expect(income_months_item.total_monthly_amount).to eq(amount)
+          end
+        end
+
+        describe 'if its start date is in that month' do
+          it 'will return the item\'s amount' do
+            amount = 1082
+            set_start_date(item: income_months_item, year: @current_year,
+                           month: @current_month, day: 31)
+            income_months_item.amount = amount
+            income_months_item.recur_period = 6
+
+            expect(income_months_item.total_monthly_amount).to eq(amount)
+          end
+        end
+
+        describe 'if it won\'t recur in that month' do
+          it 'will return zero' do
+            set_start_date(item: income_months_item, year: @current_year - 1,
+                           month: 12, day: 28)
+            income_months_item.amount = 65
+            income_months_item.recur_period = 3
+
+            expect(income_months_item.total_monthly_amount).to eq(0)
+          end
+        end
+      end
+
+      describe 'if it has an end date' do
+        describe 'if the end date is earlier than the current month' do
+          it 'will return zero' do 
+            set_start_date(item: income_months_item, year: @current_year - 1,
+                           month: 12, day: 28)
+            set_end_date(item: income_months_item, year: @current_year, 
+                         month: @current_month - 1, day: 30)
+            income_months_item.amount = 999
+            income_months_item.recur_period = 5
+
+            expect(income_months_item.total_monthly_amount).to eq(0)
+          end
+        end
+
+        describe 'if the end date falls within the current month' do
+          describe 'if the end date falls before its recur day' do
+            it 'will return zero' do
+              recur_day = 23
+              set_start_date(item: income_months_item, year: @current_year,
+                             month: 4, day: recur_day)
+              set_end_date(item: income_months_item, year: @current_year, 
+                           month: @current_month, day: recur_day - 1)
+              income_months_item.amount = 999
+              income_months_item.recur_period = 1
+
+              expect(income_months_item.total_monthly_amount).to eq(0)
+            end
+          end
+
+          describe 'if the end date falls after its recur day' do
+            it 'will return the item\'s amount' do 
+              recur_day = 23
+              amount = 32.5
+              set_start_date(item: income_months_item, year: @current_year,
+                             month: 4, day: recur_day)
+              set_end_date(item: income_months_item, year: @current_year, 
+                           month: @current_month, day: recur_day + 1)
+              income_months_item.amount = amount
+              income_months_item.recur_period = 1
+
+              expect(income_months_item.total_monthly_amount).to eq(amount)
+            end
+          end
         end
       end
     end
