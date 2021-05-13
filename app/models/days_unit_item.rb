@@ -10,6 +10,17 @@ class DaysUnitItem < RecurringItem
     first_possible_instance(lower_bound)
   end
 
+  def instances_this_month 
+    now = DateTime.now
+    first = self.first_instance_this_month
+
+    return [] if !first
+
+    (first..possible_instances_upper_bound(now).day).to_a.select do |day|
+      (day - first) % self.recur_period == 0
+    end
+  end
+
   private
 
   def possible_instances_lower_bound(now)

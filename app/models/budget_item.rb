@@ -11,6 +11,9 @@ class BudgetItem < ApplicationRecord
   def first_instance_this_month
   end
 
+  def instances_this_month
+  end
+
   private 
 
   def same_month?(date)

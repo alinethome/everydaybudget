@@ -78,4 +78,66 @@ RSpec.describe NonRecurringItem, type: :model do
       end
     end
   end
+
+  describe '#instances_this_month' do
+    before do 
+      # sets the date for testing to May 18th, 2021, at 1:00 am
+      # since we're going to be testing budget items with different 
+      # starting and ending dates, it'll be useful to keep the current date
+      # fixed
+      @current_month = 5 
+      @current_year = 2021
+      travel_to DateTime.new(@current_year,@current_month,18,1,0,0)
+    end
+
+    after do
+      travel_back
+    end
+
+    describe 'given an expense' do
+      describe 'with a date from the current month' do
+        it 'returns an array containing the item\'s date day' do
+          day = 24
+          date = DateTime.new(@current_year,@current_month,day,3,2,1)
+          non_recurring_expense.date = date
+
+          expect(non_recurring_expense.instances_this_month).to eq([day])
+        end
+      end
+
+      describe 'with a date from a past month' do
+        it 'returns an empty array' do 
+          day = 24
+          previous_month = @current_month - 1
+          date = DateTime.new(@current_year,previous_month,day,3,2,1)
+          non_recurring_expense.date = date
+
+          expect(non_recurring_expense.instances_this_month).to eq([])
+        end
+      end
+
+      describe 'given an income item' do
+        describe 'with a date from the current month' do
+          it 'returns an array containing the item\'s date day' do
+            day = 24
+            date = DateTime.new(@current_year,@current_month,day,3,2,1)
+            non_recurring_income.date = date
+
+            expect(non_recurring_income.instances_this_month).to eq([day])
+          end
+        end
+
+        describe 'with a date from a past month' do
+          it 'returns an empty array' do
+            day = 24
+            previous_month = @current_month - 1
+            date = DateTime.new(@current_year,previous_month,day,3,2,1)
+            non_recurring_income.date = date
+
+            expect(non_recurring_income.instances_this_month).to eq([])
+          end
+        end
+      end
+    end
+  end
 end

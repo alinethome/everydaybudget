@@ -7,4 +7,14 @@ class NonRecurringItem < BudgetItem
     return nil if (!same_month?(now))
     self.date.day
   end
+
+  def instances_this_month
+    first = first_instance_this_month 
+
+    if first 
+      [first]
+    else
+      []
+    end
+  end
 end

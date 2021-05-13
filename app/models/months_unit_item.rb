@@ -15,6 +15,11 @@ class MonthsUnitItem < RecurringItem
   end
 
   def instances_this_month
+    if first_instance_this_month 
+      [first_instance_this_month]
+    else
+      []
+    end
   end
 
   private 
