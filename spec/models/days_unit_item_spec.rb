@@ -43,6 +43,18 @@ RSpec.describe DaysUnitItem, type: :model do
               expect(expense_days_item.first_instance_this_month).to eq(recur_day)
             end
           end
+
+          context 'with a start date in the current month' do
+            it 'will return the start date\'s day' do
+              start_day = 13
+              set_start_date(item: expense_days_item, year: @current_year,
+                             month: @current_month, day: start_day)
+              expense_days_item.recur_period = 4
+
+              expect(expense_days_item.
+                     first_instance_this_month).to eq(start_day)
+            end
+          end
         end
 
         describe 'that will not recur in the current month' do
@@ -117,6 +129,18 @@ RSpec.describe DaysUnitItem, type: :model do
 
               recur_day = 1
               expect(income_days_item.first_instance_this_month).to eq(recur_day)
+            end
+          end
+
+          context 'with a start date in the current month' do
+            it 'will return the start date\'s day' do
+              start_day = 31
+              set_start_date(item: income_days_item, year: @current_year,
+                             month: @current_month, day: start_day)
+              income_days_item.recur_period = 4
+
+              expect(income_days_item.
+                     first_instance_this_month).to eq(start_day)
             end
           end
         end
