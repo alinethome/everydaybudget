@@ -55,4 +55,12 @@ class MonthsUnitItem < RecurringItem
   def end_date_day_after_recur_day?(recur_day)
     self.end_date.day > recur_day
   end
+
+  def end_date_in_month?(month, year)
+    self.end_date.month == month && self.end_date.year == year
+  end
+
+  def start_date_in_month?(month, year)
+    self.start_date.month == month && self.start_date.year == year
+  end
 end
