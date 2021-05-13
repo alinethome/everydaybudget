@@ -9,9 +9,11 @@ class BudgetItem < ApplicationRecord
   belongs_to :user
 
   def first_instance_this_month
+    raise NotImplementedError
   end
 
   def instances_this_month
+    raise NotImplementedError
   end
 
   private 
