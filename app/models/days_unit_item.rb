@@ -1,43 +1,62 @@
 class DaysUnitItem < RecurringItem
   def first_instance_this_month
-    # we call now here and pass it down to subsequent methods so answers
-    # don't change between method calls if the clock ticks over into a
-    # different month
     now = DateTime.now
+    lower_bound = possible_instances_lower_bound(now)
+    upper_bound = possible_instances_upper_bound(now)
 
-    first_possible_instance = 1 + days_to_next_recur(now.month, now.year)
+    return nil if upper_before_lower?(lower_bound, upper_bound)
+    return nil if !recurs_in_period?(lower_bound, upper_bound)
 
-    if recurs_in_month?(first_possible_instance, now.month, now.year)
-      first_possible_instance
-    else
-      nil
-    end
+    first_possible_instance(lower_bound)
   end
 
   private
 
-  # all the days_to and days_since methods are calculated from the 
-  # first of the month
+  def possible_instances_lower_bound(now)
+    [self.start_date, first_of_the_month(now)].max
+  end
 
-  def days_to_next_recur(current_month, current_year)
-    days_since_last_recur = days_since_last_recur(current_month, 
-                                                  current_year)
+  def first_of_the_month(now)
+    DateTime.new(now.year, now.month, 1, 0, 0, 0)
+  end
 
-    if (days_since_last_recur == 0)
-      0
+  def possible_instances_upper_bound(now)
+    if self.end_date
+      [self.end_date, last_of_the_month(now)].min 
     else
-      self.recur_period - days_since_last_recur(current_month, current_year)
+      last_of_the_month(now)
     end
   end
 
-  def days_since_last_recur(current_month, current_year)
-    days = days_since_first_recur(current_month, current_year) % 
-      self.recur_period
+  def last_of_the_month(now)
+    DateTime.new(now.year, now.month, Time.days_in_month(now.month),
+                 0, 0, 0)
   end
 
-  def days_since_first_recur(current_month, current_year)
-    first_of_current_month = DateTime.new(current_year, current_month, 1, 0, 0, 0)
-    days_between(self.start_date, first_of_current_month)
+  def upper_before_lower?(lower_bound, upper_bound)
+    # this test doesn't consider the case of upper_bound
+    # having a year strictly higher than the lower_bound
+    # or a month strictly higher than the lower_bound
+    # because the lower bound is restricted to the current
+    # month, and the upper bound cannot be be later than 
+    # the current month
+      upper_bound.year < lower_bound.year ||
+        upper_bound.month < lower_bound.month || 
+        upper_bound.day < lower_bound.day 
+  end
+
+  def recurs_in_period?(lower_bound, upper_bound)
+    first_possible_instance(lower_bound) <= upper_bound.day
+  end
+
+  def days_to_next_possible_instance(lower_bound)
+    return 0 if days_since_last_instance(lower_bound) == 0
+
+    self.recur_period - days_since_last_instance(lower_bound)
+  end
+  
+  def days_since_last_instance(lower_bound)
+    days_between(self.start_date, lower_bound) % self.recur_period
   end
 
   def days_between(date1, date2)
@@ -52,19 +71,7 @@ class DaysUnitItem < RecurringItem
     (date2.to_datetime - date1.to_datetime).ceil.to_i.abs
   end
 
-  def recurs_in_month?(first_possible_recur, month, year)
-    last_possible_recur = last_possible_recur_of_month(month, year)
-
-    last_possible_recur && (first_possible_recur < last_possible_recur)
+  def first_possible_instance(lower_bound)
+    lower_bound.day + days_to_next_possible_instance(lower_bound)
   end
-
-  def last_possible_recur_of_month(month, year)
-    if (self.end_date)
-      return nil if !end_date_in_month?(month, year)
-      self.end_date.day
-    else 
-      Time.days_in_month(month, year)
-    end
-  end
-
 end
