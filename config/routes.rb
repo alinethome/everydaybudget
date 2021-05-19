@@ -4,7 +4,7 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: { format: :json } do
     resources :users, only: [:create, :update, :destroy, :show] do
-      resources :recurring_items, only: [:create]
+      resources :recurring_items, only: [:create, :index]
     end
 
     resources :recurring_items, only: [:update, :destroy, :show]
