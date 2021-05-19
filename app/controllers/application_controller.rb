@@ -13,4 +13,8 @@ class ApplicationController < ActionController::Base
   def current_user
     User.find_by(session_token: session[:session_token])
   end
+
+  def ensure_signed_in!
+    render json: 'Must be signed in', status: 403 if !current_user
+  end
 end
