@@ -1,4 +1,6 @@
 class NonRecurringItem < BudgetItem
+  self.inheritance_column = :_none
+
   validates :date, presence: true
   
   def first_instance_this_month
