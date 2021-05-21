@@ -11,5 +11,6 @@ Rails.application.routes.draw do
     resources :recurring_items, only: [:update, :destroy, :show]
     resources :non_recurring_items, only: [:update, :destroy, :show]
     resource :session, only: [:create, :destroy]
+    resource :budget, only: [:show]
   end
 end
