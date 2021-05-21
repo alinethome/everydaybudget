@@ -1,0 +1,2 @@
+json.max_daily_budget @budget.max_daily_budget
+json.remaining_daily_budget @budget.remaining_daily_budget
