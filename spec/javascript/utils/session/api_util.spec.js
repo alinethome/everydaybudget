@@ -1,4 +1,5 @@
-import { postUser, postSession, deleteSession } from 'frontend/utils/session/api_util.js';
+import { postUser, postSession, 
+    deleteSession } from 'frontend/utils/session/api_util.js';
 import $ from 'jquery';
 
 describe('postUser', () => {
