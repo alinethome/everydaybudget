@@ -72,6 +72,15 @@ RSpec.describe Budget, type: :model do
       expect(budget.max_daily_budget).to eq(balance/@DAYS_IN_MAY)
     end
 
+    context 'given an empty budget' do
+      it 'returns zero' do
+          budget = Budget.new(recurring_items: [],
+                              non_recurring_items: [])
+
+          expect(budget.max_daily_budget).to eq(0)
+      end
+    end
+
     context 'initialised with one recurring income item' do
       context 'and initialised with nothing else' do
         it 'returns the item\'s monthly amount divided by the month\'s days' do
@@ -124,6 +133,15 @@ RSpec.describe Budget, type: :model do
 
       expect(budget.
              remaining_daily_budget).to eq(max_daily - daily_expense)
+    end
+
+    context 'given an empty budget' do
+      it 'returns zero' do
+          budget = Budget.new(recurring_items: [],
+                              non_recurring_items: [])
+
+          expect(budget.remaining_daily_budget).to eq(0)
+      end
     end
 
     context 'given a budget with no non-recurring items' do
