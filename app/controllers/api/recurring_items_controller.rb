@@ -1,6 +1,6 @@
 class Api::RecurringItemsController < ApplicationController
   before_action :ensure_signed_in!
-  before_action :ensure_owner_signed_in!, except: [:create]
+  before_action :ensure_owner_signed_in!, except: [:create, :index]
 
   def create
     @item = RecurringItem.new(recurring_item_params)
@@ -14,7 +14,7 @@ class Api::RecurringItemsController < ApplicationController
   end
 
   def index
-    @items = RecurringItem.where(user_id: params[:user_id].to_i)
+    @items = RecurringItem.where(user_id: current_user.id)
 
     render :index
   end
@@ -59,11 +59,7 @@ class Api::RecurringItemsController < ApplicationController
   end
 
   def ensure_owner_signed_in!
-    if selected_item
-      owner = selected_item.user_id 
-    else
-      owner = params[:user_id].to_i
-    end
+    owner = selected_item.user_id 
 
     unless owner == current_user.id
       render json: ['You do not have permission to do that'], 

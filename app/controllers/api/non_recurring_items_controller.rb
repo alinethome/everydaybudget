@@ -1,6 +1,6 @@
 class Api::NonRecurringItemsController < ApplicationController
   before_action :ensure_signed_in!
-  before_action :ensure_owner_signed_in!, except: [:create]
+  before_action :ensure_owner_signed_in!, except: [:create, :index]
 
   def create
     @item = NonRecurringItem.new(non_recurring_item_params)
@@ -41,7 +41,7 @@ class Api::NonRecurringItemsController < ApplicationController
   end
 
   def index
-    @items = NonRecurringItem.where(user_id: params[:user_id].to_i)
+    @items = NonRecurringItem.where(user_id: current_user.id)
 
     render :index
   end
@@ -58,11 +58,7 @@ class Api::NonRecurringItemsController < ApplicationController
   end
 
   def ensure_owner_signed_in!
-    if selected_item
-      owner = selected_item.user_id 
-    else
-      owner = params[:user_id].to_i
-    end
+    owner = selected_item.user_id 
 
     unless owner == current_user.id
       render json: ['You do not have permission to do that'], 
