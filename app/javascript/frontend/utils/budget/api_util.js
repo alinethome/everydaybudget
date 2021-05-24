@@ -1,0 +1,105 @@
+import $ from 'jquery';
+
+const getToken = () => {
+    return document.querySelector('meta[name="csrf-token"]')
+        .getAttribute('content');
+};
+
+export const postRecurring = (item) => {
+    let token = getToken();
+
+    return $.ajax({
+        url: '/api/recurring_items',
+        method: 'POST',
+        data: { 'item': item },
+        headers: { 'X-CSRF-Token': token }
+    });
+};
+
+export const postNonRecurring = (item) => {
+    let token = getToken();
+
+    return $.ajax({
+        url: '/api/non_recurring_items',
+        method: 'POST',
+        data: { 'item': item },
+        headers: { 'X-CSRF-Token': token }
+    });
+};
+
+export const putRecurring = (itemId, item) =>  {
+    let token = getToken();
+
+    return $.ajax({
+        url: `/api/recurring_items/${itemId}`,
+        method: 'PUT',
+        data: { 'item': item },
+        headers: { 'X-CSRF-Token': token }
+    });
+};
+
+export const putNonRecurring = (itemId, item) =>  {
+    let token = getToken();
+
+    return $.ajax({
+        url: `/api/non_recurring_items/${itemId}`,
+        method: 'PUT',
+        data: { 'item': item },
+        headers: { 'X-CSRF-Token': token }
+    });
+};
+
+export const deleteRecurring = (itemId) =>  {
+    let token = getToken();
+
+    return $.ajax({
+        url: `/api/recurring_items/${itemId}`,
+        method: 'DELETE',
+        headers: { 'X-CSRF-Token': token }
+    });
+};
+
+export const deleteNonRecurring = (itemId) =>  {
+    let token = getToken();
+
+    return $.ajax({
+        url: `/api/non_recurring_items/${itemId}`,
+        method: 'DELETE',
+        headers: { 'X-CSRF-Token': token }
+    });
+};
+
+export const getRecurring = (itemId) =>  {
+    return $.ajax({
+        url: `/api/recurring_items/${itemId}`,
+        method: 'GET'
+    });
+};
+
+export const getNonRecurring = (itemId) =>  {
+    return $.ajax({
+        url: `/api/non_recurring_items/${itemId}`,
+        method: 'GET',
+    });
+};
+
+export const indexRecurring = (itemId) =>  {
+    return $.ajax({
+        url: `/api/recurring_items`,
+        method: 'GET'
+    });
+};
+
+export const indexNonRecurring = (itemId) =>  {
+    return $.ajax({
+        url: `/api/non_recurring_items`,
+        method: 'GET'
+    });
+};
+
+export const getBudget = () =>  {
+    return $.ajax({
+        url: `/api/budget`,
+        method: 'GET'
+    });
+};
