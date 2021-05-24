@@ -4,7 +4,7 @@ class Api::NonRecurringItemsController < ApplicationController
 
   def create
     @item = NonRecurringItem.new(non_recurring_item_params)
-    @item.user_id = params[:user_id]
+    @item.user_id = current_user.id
 
     if @item.save
       render :show
@@ -35,6 +35,9 @@ class Api::NonRecurringItemsController < ApplicationController
   end
 
   def show
+    @item = selected_item
+
+    render :show
   end
 
   def index
@@ -50,7 +53,7 @@ class Api::NonRecurringItemsController < ApplicationController
   end
 
   def non_recurring_item_params
-    params.require(:non_recurring_item).
+    params.require(:item).
       permit([:name, :type, :date, :amount])
   end
 
