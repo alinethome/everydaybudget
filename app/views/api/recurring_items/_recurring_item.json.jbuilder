@@ -1,4 +1,4 @@
-json.extract! item, :user_id, :name, :type, 
+json.extract! item, :id, :user_id, :name, :type, 
   :start_date, :end_date, :amount
 
 json.recur_unit do
