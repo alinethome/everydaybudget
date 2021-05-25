@@ -252,7 +252,14 @@ describe('putNonRecurring', () => {
 describe('deleteRecurring', () => {
     const ajaxSpy = jest.spyOn($, 'ajax');
     const token = 'token'
-    const id = 3;
+    let today = new Date();
+    const item = {
+        id: 3,
+        name: "Non Recurring Item",
+        type: "expense",
+        amount: 10,
+        date: today,
+    };
     let metaElement;
 
     const lastAjaxCallArgs = (spy) => {
@@ -278,18 +285,18 @@ describe('deleteRecurring', () => {
     });
 
     test('should make a delete request', () => {
-        deleteRecurring(id);
+        deleteRecurring(item);
         expect(lastAjaxCallArgs(ajaxSpy)["method"]).toBe('DELETE');
     });
 
     test('should make the request to the item\'s url', () => {
-        deleteRecurring(id);
+        deleteRecurring(item);
         expect(lastAjaxCallArgs(ajaxSpy)["url"])
-            .toBe(`/api/recurring_items/${id}`);
+            .toBe(`/api/recurring_items/${item.id}`);
     });
 
     test('should include the csrf token in the request', () => {
-        deleteRecurring(id);
+        deleteRecurring(item);
         expect(lastAjaxCallArgs(ajaxSpy)["headers"]['X-CSRF-Token'])
             .toBe(token);
     });
@@ -298,7 +305,14 @@ describe('deleteRecurring', () => {
 describe('deleteNonRecurring', () => {
     const ajaxSpy = jest.spyOn($, 'ajax');
     const token = 'token'
-    const id = 3;
+    let today = new Date();
+    const item = {
+        id: 3,
+        name: "Non Recurring Item",
+        type: "expense",
+        amount: 10,
+        date: today,
+    };
     let metaElement;
 
     const lastAjaxCallArgs = (spy) => {
@@ -324,18 +338,18 @@ describe('deleteNonRecurring', () => {
     });
 
     test('should make a delete request', () => {
-        deleteNonRecurring(id);
+        deleteNonRecurring(item);
         expect(lastAjaxCallArgs(ajaxSpy)["method"]).toBe('DELETE');
     });
 
     test('should make the request to the item\'s url', () => {
-        deleteNonRecurring(id);
+        deleteNonRecurring(item);
         expect(lastAjaxCallArgs(ajaxSpy)["url"])
-            .toBe(`/api/non_recurring_items/${id}`);
+            .toBe(`/api/non_recurring_items/${item.id}`);
     });
 
     test('should include the csrf token in the request', () => {
-        deleteNonRecurring(id);
+        deleteNonRecurring(item);
         expect(lastAjaxCallArgs(ajaxSpy)["headers"]['X-CSRF-Token'])
             .toBe(token);
     });

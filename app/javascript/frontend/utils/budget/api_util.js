@@ -49,21 +49,21 @@ export const putNonRecurring = (item) =>  {
     });
 };
 
-export const deleteRecurring = (itemId) =>  {
+export const deleteRecurring = (item) =>  {
     let token = getToken();
 
     return $.ajax({
-        url: `/api/recurring_items/${itemId}`,
+        url: `/api/recurring_items/${item.id}`,
         method: 'DELETE',
         headers: { 'X-CSRF-Token': token }
     });
 };
 
-export const deleteNonRecurring = (itemId) =>  {
+export const deleteNonRecurring = (item) =>  {
     let token = getToken();
 
     return $.ajax({
-        url: `/api/non_recurring_items/${itemId}`,
+        url: `/api/non_recurring_items/${item.id}`,
         method: 'DELETE',
         headers: { 'X-CSRF-Token': token }
     });
@@ -83,14 +83,14 @@ export const getNonRecurring = (itemId) =>  {
     });
 };
 
-export const indexRecurring = (itemId) =>  {
+export const indexRecurring = () =>  {
     return $.ajax({
         url: `/api/recurring_items`,
         method: 'GET'
     });
 };
 
-export const indexNonRecurring = (itemId) =>  {
+export const indexNonRecurring = () =>  {
     return $.ajax({
         url: `/api/non_recurring_items`,
         method: 'GET'
