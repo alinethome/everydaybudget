@@ -1,13 +1,6 @@
-json.extract! item, :id, :user_id, :name, :type, 
-  :start_date, :end_date, :amount
-
-json.recur_unit do
-  if item.recur_unit_type == "DaysUnitItem"
-    "days"
-  else
-    "months"
-  end
-end
+json.extract! item, :id, :name, :type, 
+  :start_date, :end_date, :recur_period,
+  :recur_unit_type, :amount
 
 json.month_instances item.instances_this_month
 
