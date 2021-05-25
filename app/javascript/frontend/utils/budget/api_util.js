@@ -27,22 +27,22 @@ export const postNonRecurring = (item) => {
     });
 };
 
-export const putRecurring = (itemId, item) =>  {
+export const putRecurring = (item) =>  {
     let token = getToken();
 
     return $.ajax({
-        url: `/api/recurring_items/${itemId}`,
+        url: `/api/recurring_items/${item.id}`,
         method: 'PUT',
         data: { 'item': item },
         headers: { 'X-CSRF-Token': token }
     });
 };
 
-export const putNonRecurring = (itemId, item) =>  {
+export const putNonRecurring = (item) =>  {
     let token = getToken();
 
     return $.ajax({
-        url: `/api/non_recurring_items/${itemId}`,
+        url: `/api/non_recurring_items/${item.id}`,
         method: 'PUT',
         data: { 'item': item },
         headers: { 'X-CSRF-Token': token }
