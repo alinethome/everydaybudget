@@ -14,7 +14,7 @@ const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 const recurring1 = new RecurringItem({ id: 1 });
 const recurring2 = new RecurringItem({ id: 2 });
-const items = [recurring1, recurring1]
+const items = [recurring1, recurring2]
 
 const postRecurring = jest.spyOn(API, 'postRecurring')
     .mockImplementation((item) => {
