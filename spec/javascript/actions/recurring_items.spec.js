@@ -7,33 +7,13 @@ import {
     destroyRecurringItem
 } from 'frontend/actions/recurring_items.js';
 import * as API from 'frontend/utils/budget/api_util.js';
+import RecurringItem from '../factories/recurring_item.js';
 
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
-const recurring1 = {
-    id: 1,
-    name: "A Recurring Item",
-    type: "income",
-    start_date: new Date(),
-    end_date: null,
-    amount: 1000,
-    recur_period: 1,
-    recur_unit_type: "MonthsUnitItem",
-    month_instances: []
-};
-
-const recurring2 = {
-    id: 2,
-    name: "Another Recurring Item",
-    type: "expense",
-    start_date: new Date(),
-    end_date: new Date(),
-    amount: 5,
-    recur_period: 7,
-    recur_unit_type: "DaysUnitItem",
-    month_instances: []
-};
+const recurring1 = new RecurringItem({ id: 1 });
+const recurring2 = new RecurringItem({ id: 2 });
 const items = [recurring1, recurring1]
 
 const postRecurring = jest.spyOn(API, 'postRecurring')

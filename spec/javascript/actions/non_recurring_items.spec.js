@@ -7,27 +7,12 @@ import {
     destroyNonRecurringItem
 } from 'frontend/actions/non_recurring_items.js';
 import * as API from 'frontend/utils/budget/api_util.js';
-
+import NonRecurringItem from '../factories/non_recurring_item.js';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
-const non_recurring1 = {
-    id: 1,
-    name: "An Item",
-    type: "income",
-    date: new Date(),
-    amount: 50,
-    month_instances: []
-};
-
-const non_recurring2 = {
-    id: 2,
-    name: "Another Item",
-    type: "expense",
-    date: new Date(),
-    amount: 7,
-    month_instances: []
-};
+const non_recurring1 = new NonRecurringItem({ id: 1 });
+const non_recurring2 = new NonRecurringItem({ id: 2 });
 const items = [non_recurring1, non_recurring2]
 
 const postNonRecurring = jest.spyOn(API, 'postNonRecurring')
