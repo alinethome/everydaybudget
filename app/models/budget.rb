@@ -44,6 +44,6 @@ class Budget
   end
 
   def now
-    DateTime.now
+    DateTime.now().new_offset()
   end
 end
