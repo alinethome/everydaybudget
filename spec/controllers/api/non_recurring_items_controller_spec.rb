@@ -418,26 +418,6 @@ RSpec.describe Api::NonRecurringItemsController, type: :controller do
       end
     end
 
-    context 'given the wrong user is logged in' do
-      before do
-        session[:session_token] = @wrong_user.session_token
-      end
-
-      after do 
-        session[:session_token] = nil
-      end
-
-      it 'returns a json response' do
-        get :index, params: { user_id: @user.id }, format: :json
-        expect(response.header['Content-Type']).to include 'application/json'
-      end
-
-      it 'returns a 403 status code' do
-        get :index, params: { user_id: @user.id }, format: :json
-        expect(response).to have_http_status(403)
-      end
-    end
-
     context 'given the owner is logged in' do
       before do
         session[:session_token] = @user.session_token
