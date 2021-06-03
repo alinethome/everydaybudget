@@ -1,7 +1,4 @@
-class Api::NonRecurringItemsController < ApplicationController
-  before_action :ensure_signed_in!
-  before_action :ensure_owner_signed_in!, except: [:create, :index]
-
+class Api::NonRecurringItemsController < Api::BudgetItemsController
   def create
     @item = NonRecurringItem.new(non_recurring_item_params)
     @item.user_id = current_user.id
@@ -55,14 +52,5 @@ class Api::NonRecurringItemsController < ApplicationController
   def non_recurring_item_params
     params.require(:item).
       permit([:name, :type, :date, :amount])
-  end
-
-  def ensure_owner_signed_in!
-    owner = selected_item.user_id 
-
-    unless owner == current_user.id
-      render json: ['You do not have permission to do that'], 
-      status: 403 
-    end
   end
 end
