@@ -25,7 +25,7 @@ RSpec.describe Api::NonRecurringItemsController, type: :controller do
         expect{
           post :create, 
           params: { user_id: @user.id,
-                    non_recurring_item: FactoryBot.
+                    item: FactoryBot.
                     attributes_for(:non_recurring_item)}, format: :json
         }.to_not change(NonRecurringItem, :count)
       end
@@ -33,7 +33,7 @@ RSpec.describe Api::NonRecurringItemsController, type: :controller do
       it 'returns a json response' do
         post :create,
           params: { user_id: @user.id,
-                    non_recurring_item: FactoryBot.
+                    item: FactoryBot.
                     attributes_for(:non_recurring_item) }, format: :json
         expect(response.header['Content-Type']).to include 'application/json'
       end
@@ -41,7 +41,7 @@ RSpec.describe Api::NonRecurringItemsController, type: :controller do
       it 'returns a forbidden status code' do
         post :create,
           params: { user_id: @user.id,
-                    non_recurring_item: FactoryBot.
+                    item: FactoryBot.
                     attributes_for(:non_recurring_item) }, format: :json
         expect(response).to have_http_status(403)
       end
@@ -60,7 +60,7 @@ RSpec.describe Api::NonRecurringItemsController, type: :controller do
         it 'renders the newly created item as json' do
           post :create,
             params: { user_id: @user.id,
-                      non_recurring_item: FactoryBot.
+                      item: FactoryBot.
                       attributes_for(:non_recurring_item) }, format: :json
           expect(response).to render_template(:show)
         end
@@ -69,7 +69,7 @@ RSpec.describe Api::NonRecurringItemsController, type: :controller do
           expect{
             post :create, 
             params: { user_id: @user.id,
-                      non_recurring_item: FactoryBot.
+                      item: FactoryBot.
                       attributes_for(:non_recurring_item)}, format: :json
           }.to change(NonRecurringItem, :count).by(1)
         end
@@ -79,14 +79,14 @@ RSpec.describe Api::NonRecurringItemsController, type: :controller do
         it 'does not create a new budget item' do
           expect{
             post :create, params: { user_id: @user.id,
-                                    non_recurring_item: bad_params }, 
+                                    item: bad_params }, 
                                     format: :json
           }.to_not change(NonRecurringItem, :count)
         end
 
         it 'returns an unprocessable entity status' do
           post :create, params: { user_id: @user.id,
-                                  non_recurring_item: bad_params }, 
+                                  item: bad_params }, 
                                   format: :json
 
           expect(response).to have_http_status(422)
@@ -94,7 +94,7 @@ RSpec.describe Api::NonRecurringItemsController, type: :controller do
 
         it 'returns a json response' do
           post :create, params: { user_id: @user.id,
-                                  non_recurring_item: bad_params }, 
+                                  item: bad_params }, 
                                   format: :json
 
           expect(response.header['Content-Type']).to include 'application/json'
@@ -215,7 +215,7 @@ RSpec.describe Api::NonRecurringItemsController, type: :controller do
 
       it 'does not update the item' do
         put :update, 
-          params: { id: @item.id, non_recurring_item: good_params }, 
+          params: { id: @item.id, item: good_params }, 
           format: :json
 
         item = NonRecurringItem.find(@item.id)
@@ -224,7 +224,7 @@ RSpec.describe Api::NonRecurringItemsController, type: :controller do
 
       it 'returns a json response' do
         put :update, 
-          params: { id: @item.id, non_recurring_item: good_params }, 
+          params: { id: @item.id, item: good_params }, 
           format: :json
 
         expect(response.header['Content-Type']).to include 'application/json'
@@ -232,7 +232,7 @@ RSpec.describe Api::NonRecurringItemsController, type: :controller do
 
       it 'returns a 403 status code' do
         put :update, 
-          params: { id: @item.id, non_recurring_item: good_params }, 
+          params: { id: @item.id, item: good_params }, 
           format: :json
 
         expect(response).to have_http_status(403)
@@ -250,7 +250,7 @@ RSpec.describe Api::NonRecurringItemsController, type: :controller do
 
       it 'does not update the item' do
         put :update, 
-          params: { id: @item.id, non_recurring_item: good_params }, 
+          params: { id: @item.id, item: good_params }, 
           format: :json
 
         item = NonRecurringItem.find(@item.id)
@@ -259,7 +259,7 @@ RSpec.describe Api::NonRecurringItemsController, type: :controller do
 
       it 'returns a json response' do
         put :update, 
-          params: { id: @item.id, non_recurring_item: good_params }, 
+          params: { id: @item.id, item: good_params }, 
           format: :json
 
         expect(response.header['Content-Type']).to include 'application/json'
@@ -267,7 +267,7 @@ RSpec.describe Api::NonRecurringItemsController, type: :controller do
 
       it 'returns a 403 status code' do
         put :update, 
-          params: { id: @item.id, non_recurring_item: good_params }, 
+          params: { id: @item.id, item: good_params }, 
           format: :json
 
         expect(response).to have_http_status(403)
@@ -286,7 +286,7 @@ RSpec.describe Api::NonRecurringItemsController, type: :controller do
       context 'with valid id and item params' do
         it 'updates the item' do
           put :update, 
-            params: { id: @item.id, non_recurring_item: good_params }, 
+            params: { id: @item.id, item: good_params }, 
             format: :json
 
           item = NonRecurringItem.find(@item.id)
@@ -295,7 +295,7 @@ RSpec.describe Api::NonRecurringItemsController, type: :controller do
 
         it 'returns the updated item formatted as json' do
           put :update, 
-            params: { id: @item.id, non_recurring_item: good_params }, 
+            params: { id: @item.id, item: good_params }, 
             format: :json
 
           expect(response).to render_template(:show)
@@ -305,7 +305,7 @@ RSpec.describe Api::NonRecurringItemsController, type: :controller do
       describe 'with invalid attributes' do
         it 'does not modify the item' do
           put :update, 
-            params: { id: @item.id, non_recurring_item: bad_params }, 
+            params: { id: @item.id, item: bad_params }, 
             format: :json
 
           updated_item = NonRecurringItem.find(@item.id)
@@ -314,7 +314,7 @@ RSpec.describe Api::NonRecurringItemsController, type: :controller do
 
         it 'returns a json response' do
           put :update, 
-            params: { id: @item.id, non_recurring_item: bad_params }, 
+            params: { id: @item.id, item: bad_params }, 
             format: :json
 
           expect(response.header['Content-Type']).to include 'application/json'
@@ -322,7 +322,7 @@ RSpec.describe Api::NonRecurringItemsController, type: :controller do
 
         it 'returns a bad request status code' do
           put :update, 
-            params: { id: @item.id, non_recurring_item: bad_params }, 
+            params: { id: @item.id, item: bad_params }, 
             format: :json
 
           expect(response).to have_http_status(400)
