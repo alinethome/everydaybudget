@@ -6,16 +6,18 @@ import NavBarContainer from './nav_bar/nav_bar_container.jsx';
 import DailyBudgetDisplayContainer from 
 './daily_budget_display/daily_budget_display_container.jsx';
 import { AuthRoute, ProtectedRoute } from '../utils/route_util.js';
-import IncomeItemForm from './budget_items/income_item_form.jsx';
+import ItemFormContainer from './budget_items/item_form_container.jsx';
 
 const Root = ({ store }) => (
     <Provider store={ store }>
         <HashRouter>
             <div>
                 <Route path='/' component={ NavBarContainer } />
-                <ProtectedRoute exact path='/income' 
-                    render={ () => <IncomeItemForm /> } />
-                <ProtectedRoute path='/' 
+                <ProtectedRoute path='/income' 
+                    render={ () => <ItemFormContainer type="income" /> } />
+                <ProtectedRoute path='/expenses' 
+                    render={ () => <ItemFormContainer type="expense" /> } />
+                <ProtectedRoute path='/' exact
                     render={ () => <DailyBudgetDisplayContainer /> } />
                 <AuthRoute path='/signup' 
                     render={ () => <UserFormContainer formType="signup" /> } />
