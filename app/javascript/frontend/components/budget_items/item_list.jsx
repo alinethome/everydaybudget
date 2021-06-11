@@ -4,11 +4,21 @@ import Item from './item.jsx';
 class ItemList extends React.Component {
     constructor(props) {
         super(props);
+        this.state = { recurDisplay: "recurring" };
+
+        this.handleClick = this.handleClick.bind(this);
     }
 
     componentDidMount() {
         this.props.fetchRecurringItems();
         this.props.fetchNonRecurringItems();
+    }
+
+    handleClick(recurDisplay) {
+        return (e) => { 
+            e.preventDefault();
+            this.setState({ recurDisplay })
+        };
     }
 
     render() {
@@ -23,30 +33,39 @@ class ItemList extends React.Component {
 
         return (
             <div>
-                <h2>Recurring</h2>
                 <ul>
-                    { 
-                        recurringItems.map((item) => {
-                            return(<Item key={ item.id } 
-                                item={ item }
-                                recurring={ true }
-                                destroyFn={ destroyRecurringItem }
-                                updateFn={ updateRecurringItem }/>);
-                        })
-                    }
+                    <a href="#" onClick={ this.handleClick("recurring") }>
+                        Recurring</a>
+                    <a href="#" onClick={ this.handleClick("non-recurring") }>
+                        Non-Recurring</a>
                 </ul>
-                <h2>Non-Recurring</h2>
-                <ul>
-                    { 
-                        nonRecurringItems.map((item) => {
-                            return(<Item key={ item.id } 
-                                item={ item }
-                                recurring={ false }
-                                destroyFn={ destroyNonRecurringItem }
-                                updateFn={ updateNonRecurringItem }/>);
-                        })
-                    }
-                </ul>
+
+                { this.state.recurDisplay === "recurring" ? 
+
+                    <ul>
+                        { 
+                            recurringItems.map((item) => {
+                                return(<Item key={ item.id } 
+                                    item={ item }
+                                    recurring={ true }
+                                    destroyFn={ destroyRecurringItem }
+                                    updateFn={ updateRecurringItem }/>);
+                            })
+                        }
+                    </ul>
+                    :
+                    <ul>
+                        { 
+                            nonRecurringItems.map((item) => {
+                                return(<Item key={ item.id } 
+                                    item={ item }
+                                    recurring={ false }
+                                    destroyFn={ destroyNonRecurringItem }
+                                    updateFn={ updateNonRecurringItem }/>);
+                            })
+                        }
+                    </ul>
+                }
             </div>);
 
     };
