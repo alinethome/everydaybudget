@@ -7,6 +7,7 @@ import DailyBudgetDisplayContainer from
 './daily_budget_display/daily_budget_display_container.jsx';
 import { AuthRoute, ProtectedRoute } from '../utils/route_util.js';
 import ItemFormContainer from './budget_items/item_form_container.jsx';
+import ItemListContainer from './budget_items/item_list_container.jsx';
 
 const Root = ({ store }) => (
     <Provider store={ store }>
@@ -15,8 +16,12 @@ const Root = ({ store }) => (
                 <Route path='/' component={ NavBarContainer } />
                 <ProtectedRoute path='/income' 
                     render={ () => <ItemFormContainer type="income" /> } />
+                <ProtectedRoute path='/income'
+                    render={ () => <ItemListContainer type="income"/>} />
                 <ProtectedRoute path='/expenses' 
                     render={ () => <ItemFormContainer type="expense" /> } />
+                <ProtectedRoute path='/expenses'
+                    render={ () => <ItemListContainer type="expense"/>} />
                 <ProtectedRoute path='/' exact
                     render={ () => <DailyBudgetDisplayContainer /> } />
                 <AuthRoute path='/signup' 
