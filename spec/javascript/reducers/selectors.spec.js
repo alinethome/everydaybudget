@@ -1,6 +1,8 @@
 import { 
     selectNonRecurringItems,
-    selectRecurringItems
+    selectRecurringItems,
+    selectNonRecurringItemsOfType,
+    selectRecurringItemsOfType
 } from 'frontend/reducers/selectors.js';
 import NonRecurringItem from '../factories/non_recurring_item.js';
 import RecurringItem from '../factories/recurring_item.js';
@@ -116,4 +118,166 @@ describe('selectRecurringItems', () => {
                 .toBeLessThan(result.indexOf(noEndDateThirdLower));
         });
     })
+});
+
+describe('selectNonRecurringItemsOfType', () => {
+    describe('given a state with no recurring items', () => {
+        test('it returns an empty array', () => {
+            const state = { entities: { nonRecurringItems: {} } };
+
+            expect(selectNonRecurringItemsOfType(state, "income"))
+                .toEqual([]);
+            expect(selectNonRecurringItemsOfType(state, "expense"))
+                .toEqual([]);
+
+        });
+    });
+
+    describe('given a state with no items of the correct type', () => {
+        const expense = new NonRecurringItem({
+            id: 9,
+            date: new Date(2020, 2, 17),
+            type: "expense"
+        });
+
+        const incomeItem = new NonRecurringItem({
+            id: 10,
+            date: new Date(2020, 2, 17),
+            type: "income"
+        });
+
+        const stateWithNoExpenses = { entities: {
+            nonRecurringItems: { incomeItem }
+        }};
+
+        const stateWithNoIncome = { entities: {
+            nonRecurringItems: { expense }
+        }};
+
+        test('it return an empty array', () => {
+
+            expect(selectNonRecurringItemsOfType(stateWithNoIncome, "income"))
+                .toEqual([]);
+            expect(selectNonRecurringItemsOfType(stateWithNoExpenses, 
+                "expense")).toEqual([]);
+        });
+    })
+
+    describe('given a state with multiple appropriate items', () => {
+        const earlyDate = new NonRecurringItem({
+            id: 7, 
+            date: new Date(2020, 4, 7),
+            type: "income"
+        });
+
+        const lateDate = new NonRecurringItem({
+            id: 6, 
+            date: new Date(2020, 5, 7),
+            type: "income"
+        });
+
+        const state = { entities: { nonRecurringItems: {
+            [earlyDate.id]: earlyDate,
+            [lateDate.id]: lateDate
+        }}};
+
+        test('it preserves the correct order', () => {
+            expect(selectNonRecurringItemsOfType(state, 'income'))
+                .toEqual([lateDate, earlyDate]);
+        });
+    })
+});
+
+
+describe('selectRecurringItemsOfType', () => {
+    describe('given a state with no recurring items', () => {
+        test('it returns an empty array', () => {
+            const state = { entities: { recurringItems: {} } };
+
+            expect(selectRecurringItemsOfType(state, "income"))
+                .toEqual([]);
+            expect(selectRecurringItemsOfType(state, "expense"))
+                .toEqual([]);
+
+        });
+    });
+
+    describe('given a state with no items of the correct type', () => {
+        const expense = new RecurringItem({
+            id: 9,
+            start_date: new Date(2020, 2, 17),
+            type: "expense"
+        });
+
+        const incomeItem = new RecurringItem({
+            id: 10,
+            start_date: new Date(2020, 2, 17),
+            type: "income"
+        });
+
+        const stateWithNoExpenses = { entities: {
+            recurringItems: { incomeItem }
+        }};
+
+        const stateWithNoIncome = { entities: {
+            recurringItems: { expense }
+        }};
+
+        test('it return an empty array', () => {
+
+            expect(selectRecurringItemsOfType(stateWithNoIncome, "income"))
+                .toEqual([]);
+            expect(selectRecurringItemsOfType(stateWithNoExpenses, "expense"))
+                .toEqual([]);
+        });
+    })
+
+    describe('given a state with multiple appropriate items', () => {
+        const noEndDateFirst = new RecurringItem({ 
+            id: 4, 
+            name: "a",
+            type: "income"
+
+        });
+
+        const noEndDateSecond = new RecurringItem({ 
+            id: 1, 
+            name: "b",
+            type: "income"
+        });
+
+        const noEndDateThirdLower = new RecurringItem({
+            id: 2, 
+            name: "C",
+            type: "income"
+        });
+
+        const earlyEndDate = new RecurringItem({
+            id: 7, 
+            start_date: new Date(2019, 7, 10),
+            end_date: new Date(2020, 4, 7),
+            type: "income"
+        });
+
+        const lateEndDate = new RecurringItem({
+            id: 6, 
+            start_date: new Date(2019, 7, 10),
+            end_date: new Date(2020, 5, 7),
+            type: "income"
+        });
+
+        const state = { entities: { recurringItems: {
+            [lateEndDate.id]: lateEndDate,
+            [noEndDateSecond.id]: noEndDateSecond,
+            [earlyEndDate.id]: earlyEndDate,
+            [noEndDateThirdLower.id]: noEndDateThirdLower,
+            [noEndDateFirst.id]: noEndDateFirst
+        }}};
+
+        test('it preserves the correct order', () => {
+            expect(selectRecurringItemsOfType(state, 'income'))
+                .toEqual([noEndDateFirst, noEndDateSecond,
+                    noEndDateThirdLower, lateEndDate, earlyEndDate]);
+        });
+    });
 });

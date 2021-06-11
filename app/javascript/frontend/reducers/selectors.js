@@ -24,4 +24,10 @@ export const selectRecurringItems = (state) => {
     })
 }
 
+export const selectRecurringItemsOfType = (state, type) => {
+    return selectRecurringItems(state).filter(item => item.type === type );
+};
 
+export const selectNonRecurringItemsOfType = (state, type) => {
+    return selectNonRecurringItems(state).filter(item => item.type === type );
+};
