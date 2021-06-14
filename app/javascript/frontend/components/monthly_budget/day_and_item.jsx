@@ -3,7 +3,7 @@ import React from 'react';
 const DayAndItem = ({ dayItemPair }) => {
     const day = dayItemPair[0];
     const item = dayItemPair[1];
-    const sign = item.typpe === "income" ? "+" : "-";
+    const sign = item.type === "income" ? "+" : "-";
 
     return (
         <li>
