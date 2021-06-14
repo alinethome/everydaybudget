@@ -2,7 +2,9 @@ import {
     selectNonRecurringItems,
     selectRecurringItems,
     selectNonRecurringItemsOfType,
-    selectRecurringItemsOfType
+    selectRecurringItemsOfType,
+    selectRecurringMonthlyItemsByDay,
+    selectNonRecurringMonthlyItemsByDay
 } from 'frontend/reducers/selectors.js';
 import NonRecurringItem from '../factories/non_recurring_item.js';
 import RecurringItem from '../factories/recurring_item.js';
@@ -281,3 +283,167 @@ describe('selectRecurringItemsOfType', () => {
         });
     });
 });
+
+describe('selectNonRecurringMonthlyItemsByDay', () => {
+    describe('given a state with no non-recurring items', () => {
+        const state = { entities: { nonRecurringItems: {} }};
+
+        test('it returns an empty object', () => {
+            expect(selectNonRecurringMonthlyItemsByDay(state))
+                .toEqual({});
+        });
+    })
+
+    describe('given a state with items from before that month', () => {
+        const lastYearIncome = new NonRecurringItem({ 
+            id: 4, 
+            name: "a",
+            type: "income",
+            date: new Date(2020, 12, 31),
+            month_instances: []
+        });
+
+        const lastMonthExpense = new NonRecurringItem({ 
+            id: 1, 
+            name: "b",
+            type: "expense",
+            date: new Date(2021, 5, 28),
+            month_instances: []
+        });
+
+        const state = { entities: { nonRecurringItems: { 
+            [lastMonthExpense.id]: lastMonthExpense, 
+            [lastYearIncome.id]: lastYearIncome 
+        }}};
+
+        test('it returns an empty object', () => {
+            expect(selectNonRecurringMonthlyItemsByDay(state))
+                .toEqual({});
+        });
+    })
+
+    describe('given a state with items from that month', () => {
+        const day = 2;
+        const income = new NonRecurringItem({
+            month_instances: [day]
+        });
+
+        const state = { entities: { nonRecurringItems: {
+            [income.id]: income
+        }}};
+
+        test('it returns an object with the day it was incurred as key', () => {
+            expect(selectNonRecurringMonthlyItemsByDay(state)
+                .hasOwnProperty(day)).toEqual(true);
+        });
+
+        test('the key for a day holds an array with that day\'s items', () => {
+            expect(selectNonRecurringMonthlyItemsByDay(state)[day])
+                .toEqual([income]);
+        });
+
+        describe('given a state with items incurred the same day', () => {
+            const expense = new NonRecurringItem({
+                id: income.id + 1, 
+                month_instances: [day]
+            });
+
+            const stateWithRepeatDays = { entities: { nonRecurringItems: {
+                [income.id]: income,
+                [expense.id]: expense
+            }}};
+
+            test('items that recur on a day are in that day\'s array', () => {
+                expect(selectNonRecurringMonthlyItemsByDay(stateWithRepeatDays)
+                    [day]).toContain(income)
+                expect(selectNonRecurringMonthlyItemsByDay(stateWithRepeatDays)
+                    [day]).toContain(expense)
+            });
+        });
+    });
+})
+
+describe('selectRecurringMonthlyItemsByDay', () => {
+    describe('given a state with no recurring items', () => {
+        const state = { entities: { recurringItems: {} }};
+
+        test('it returns an empty object', () => {
+            expect(selectRecurringMonthlyItemsByDay(state))
+                .toEqual({});
+        });
+    })
+
+    describe('given a state\' recurring items won\'t recur that month', () => {
+        const endedTooEarly = new RecurringItem({ 
+            id: 4, 
+            name: "a",
+            type: "income",
+            start_date: new Date(2019, 2, 7),
+            end_date: new Date(2020, 8, 2),
+            month_instances: []
+        });
+
+        const bimonthlyExpense = new RecurringItem({ 
+            id: 1, 
+            name: "b",
+            type: "expense",
+            start_date: new Date(2021, 3, 28),
+            month_instances: []
+        });
+
+        const state = { entities: { recurringItems: { 
+            [endedTooEarly.id]: endedTooEarly, 
+            [endedTooEarly.id]: bimonthlyExpense 
+        }}};
+
+        test('it returns an empty object', () => {
+            expect(selectRecurringMonthlyItemsByDay(state))
+                .toEqual({});
+        });
+    })
+
+    describe('given a state with recrring items that recur that month', () => {
+        const day1 = 2;
+        const day2 = 17;
+        const recurringIncome = new RecurringItem({
+            month_instances: [day1, day2]
+        });
+
+        const state = { entities: { recurringItems: {
+            [recurringIncome.id]: recurringIncome
+        }}};
+
+        test('it returns an object with keys for the days it recurs', () => {
+            expect(selectRecurringMonthlyItemsByDay(state)
+                .hasOwnProperty(day1)).toEqual(true);
+
+            expect(selectRecurringMonthlyItemsByDay(state)
+                .hasOwnProperty(day2)).toEqual(true);
+        });
+
+        test('the key for a day holds an array with that day\'s items', () => {
+            expect(selectRecurringMonthlyItemsByDay(state)[day1])
+                .toEqual([recurringIncome]);
+        });
+
+        describe('given a state with items that recur the same day', () => {
+            const recurringExpense = new RecurringItem({
+                id: recurringIncome.id + 1, 
+                month_instances: [day1]
+            });
+
+            const stateWithRepeatDays = { entities: { recurringItems: {
+                [recurringIncome.id]: recurringIncome,
+                [recurringExpense.id]: recurringExpense
+            }}};
+
+            test('items that recur on a day are in that day\'s array', () => {
+                expect(selectRecurringMonthlyItemsByDay(stateWithRepeatDays)
+                    [day1]).toContain(recurringIncome)
+                expect(selectRecurringMonthlyItemsByDay(stateWithRepeatDays)
+                    [day1]).toContain(recurringExpense)
+            });
+        });
+    });
+});
+
