@@ -7,8 +7,8 @@ const NavBar = ({ logout, currentUser }) => {
     if (currentUser) {
         navigation = (<ul>
             <Link to="/">My Budget</Link>
-            <Link to="/income">Income</Link>
-            <Link to="/expenses">Expenses</Link>
+            <Link to="/income">Manage Income</Link>
+            <Link to="/expenses">Manage Expenses</Link>
         </ul>);
 
     } else {
