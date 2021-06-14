@@ -9,6 +9,7 @@ const NavBar = ({ logout, currentUser }) => {
             <Link to="/">My Budget</Link>
             <Link to="/income">Manage Income</Link>
             <Link to="/expenses">Manage Expenses</Link>
+            <Link to="/monthly">This Month</Link>
         </ul>);
 
     } else {
