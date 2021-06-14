@@ -2,13 +2,24 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const NavBar = ({ logout, currentUser }) => {
-    let sessionTools;
+    let sessionTools, navigation;
 
     if (currentUser) {
-       sessionTools = (<div>
-           { currentUser.email }
-           <button onClick={ logout }>Logout</button>
-       </div>);
+        navigation = (<ul>
+            <Link to="/">My Budget</Link>
+            <Link to="/income">Income</Link>
+            <Link to="/expenses">Expenses</Link>
+        </ul>);
+
+    } else {
+        navigation = null;
+    }
+
+    if (currentUser) {
+        sessionTools = (<div>
+            { currentUser.email }
+            <button onClick={ logout }>Logout</button>
+        </div>);
     } else {
         sessionTools = (<div>
             <Link to="/signup">Sign up</Link>
@@ -16,7 +27,9 @@ const NavBar = ({ logout, currentUser }) => {
         </div>);
     }
 
-    return sessionTools;
+    return (<nav> 
+        { navigation } { sessionTools } 
+    </nav>);
 };
 
 export default NavBar;
