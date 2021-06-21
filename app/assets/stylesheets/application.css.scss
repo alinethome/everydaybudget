@@ -1,0 +1,13 @@
+@import 'base';
+@import 'reset';
+@import 'nav_bar';
+
+body {
+    background-color: $primary-color-light;
+}
+
+#root {
+    background-color: $background;
+    max-width: 1000px;
+    margin: auto;
+}
