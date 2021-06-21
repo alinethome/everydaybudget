@@ -13,7 +13,7 @@ const NavBar = ({ logout, currentUser }) => {
         </ul>);
 
     } else {
-        navigation = null;
+        navigation = <ul></ul>;
     }
 
     if (currentUser) {
@@ -28,7 +28,7 @@ const NavBar = ({ logout, currentUser }) => {
         </div>);
     }
 
-    return (<nav> 
+    return (<nav className="nav-bar"> 
         { navigation } { sessionTools } 
     </nav>);
 };
