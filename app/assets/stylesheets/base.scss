@@ -85,4 +85,27 @@ $test-color: #CCC;
     }
 }
 
+@mixin button-on-light {
+    @include button;
+    color: $primary-color;
+    padding: 8px 12px;
+    background: $background;
+    border: 1px solid $primary-color-light;
+    border-radius: 5px;
+    cursor: pointer;
 
+    &:hover {
+        border-color: #FFF;
+        background: $primary-color;
+        color: $text-on-primary-dark;
+    }
+}
+
+@mixin form-input {
+    color: $primary-color-darker;
+    margin-left: 12px;
+    margin-right: 4px;
+    padding: 4px;
+    text-align: center;
+    border-bottom: 1px solid $primary-color-light;
+}

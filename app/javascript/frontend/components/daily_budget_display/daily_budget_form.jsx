@@ -49,19 +49,14 @@ class DailyBudgetForm extends React.Component {
     form() {
         return (
             <form>
-                <label>
-                    Title: 
-                    <input type="text"
-                        value={ this.state.title }
-                        onChange={ this.handleInput('title') }
-                    /> 
-                </label>
-                <label>
-                    <input type="text"
-                        value={ this.state.amount }
-                        onChange={ this.handleInput('amount') }
-                    /> $
-                </label>
+                <input type="text"
+                    value={ this.state.title }
+                    onChange={ this.handleInput('title') }
+                /> 
+                <input type="text"
+                    value={ this.state.amount }
+                    onChange={ this.handleInput('amount') }
+                /> $
                 <button onClick={ this.handleAdd } >
                     Add
                 </button>

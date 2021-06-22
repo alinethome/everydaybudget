@@ -1,0 +1,61 @@
+@import 'base';
+
+.daily-budget-display {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    form {
+        @include body2;
+        color: $primary-color;
+        margin-top: 24px;
+
+        input {
+            @include form-input;
+        }
+
+        input:nth-child(1) {
+            width: 156px;
+        }
+
+        input:nth-child(2) {
+            width: 48px;
+        }
+
+        button {
+            @include button-on-light;
+            margin-left: 12px;
+
+        }
+
+    }
+}
+
+.daily-budget-display-info {
+    display: flex;
+    justify-content: center;
+
+    .daily-budget-display-remaining {
+        padding: 48px 16px 16px 32px;
+        @include h1;
+    }
+
+    .daily-budget-display-max {
+        @include body1;
+        align-self: flex-end;
+    }
+
+}
+
+.daily-budget-display-buttons {
+    button {
+        @include button-on-light;
+        font-size: 24px;
+        margin: 36px 12px;
+        border-width: 2px;
+        border-radius: 100%;
+    }
+}
+
+

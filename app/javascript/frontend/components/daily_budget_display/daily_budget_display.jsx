@@ -52,11 +52,20 @@ class DailyBudgetDisplay extends React.Component {
     render() {
         const { maxDaily, remaining } = this.props;
 
-        return (<div>
-            <button onClick={ this.handlePlus }>+</button>
-            { remaining } / { maxDaily }
-            <button onClick={ this.handleMinus }>-</button>
+        return (<div className="daily-budget-display">
             { this.state.formHidden ? "" : this.form() }
+            <div className="daily-budget-display-info">
+            <span className="daily-budget-display-remaining">
+                $ { remaining?.toFixed(2) }
+            </span>
+            <span className="daily-budget-display-max">
+                / { maxDaily?.toFixed(2) }
+            </span>
+            </div>
+            <div className="daily-budget-display-buttons">
+                <button onClick={ this.handlePlus }>+</button>
+                <button onClick={ this.handleMinus }>&minus;</button>
+            </div>
         </div>);
     }
 }
