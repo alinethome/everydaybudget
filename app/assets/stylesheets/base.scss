@@ -109,3 +109,16 @@ $test-color: #CCC;
     text-align: center;
     border-bottom: 1px solid $primary-color-light;
 }
+
+@mixin form-select {
+    color: $primary-color-darker;
+    padding: 4px 8px;
+    margin: 4px;
+    cursor: pointer;
+    border-bottom: 1px solid $primary-color-light;
+}
+
+@mixin form {
+    @include body2;
+    color: $primary-color;
+}

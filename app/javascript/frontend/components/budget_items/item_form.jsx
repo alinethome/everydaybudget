@@ -74,8 +74,9 @@ class ItemForm extends React.Component {
         return (
             <div>
                 <input type="text" 
+                    className="item-form-number-field"
                     onChange={ this.handleChange("period")}
-                value={ this.state.period }/>
+                    value={ this.state.period }/>
                 <select name="unit" 
                     value={ this.state.unit }
                     onChange={ this.handleChange("unit")}>
@@ -88,17 +89,16 @@ class ItemForm extends React.Component {
 
     render() {
         return (
-            <form>
-                <label>Title: 
-                    <input type="text"
-                        onChange={ this.handleChange("title")}
-                        value={ this.state.title }/>
-                </label>
-                <label>
-                    <input type="text"
-                        onChange={ this.handleChange("amount")}
-                        value={ this.state.amount }/>
-                 $</label>
+            <form className="item-form">
+                <input type="text"
+                    className="item-form-text-field"
+                    onChange={ this.handleChange("title")}
+                    value={ this.state.title }/>
+                <input type="text"
+                    className="item-form-number-field"
+                    onChange={ this.handleChange("amount")}
+                    value={ this.state.amount }/>
+                $
                 <select name="type" 
                     value={ this.state.type }
                     onChange={ this.handleChange("type") }>

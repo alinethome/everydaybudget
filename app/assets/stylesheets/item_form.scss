@@ -1,0 +1,31 @@
+@import 'base';
+
+.item-form {
+    @include form;
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    input {
+        @include form-input;
+    }
+
+    .item-form-text-field {
+        width: 156px;
+    }
+
+    .item-form-number-field {
+        width: 48px;
+    }
+
+    select {
+        @include form-select;
+    }
+
+    button {
+        @include button-on-light;
+        margin-left: 12px;
+    }
+
+}
