@@ -10,7 +10,6 @@ $text-on-primary-light: #000;
 $background: #FFF;
 $danger-color: #b73a89;
 $danger-color-light: #e8bad4;
-$test-color: #CCC;
 
 @mixin font($size, $weight, $letter-spacing) {
   font-family: unquote("Roboto");
