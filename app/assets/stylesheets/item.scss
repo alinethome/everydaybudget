@@ -1,0 +1,43 @@
+@import 'base';
+
+.item {
+    @include body1;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid $primary-color-light;
+    text-transform: uppercase;
+
+    .item-date-info {
+        @include caption;
+        padding-left: 8px;
+        padding-top: 4px;
+        color: $primary-color-darker;
+        font-weight: 500;
+    }
+
+    .item-recur-info {
+        border-left: 1px solid $primary-color-lighter;
+        padding-left: 8px;
+        margin-left: 8px;
+    }
+
+    .item-buttons {
+        display: none;
+        margin-left: 24px;
+
+        button {
+            margin-right: 12px;
+            @include button-on-light;
+        }
+
+        .item-delete-button {
+            @include danger-button-on-light;
+        }
+    }
+    
+    &:hover .item-buttons {
+        display: inline-block;
+    }
+}
+

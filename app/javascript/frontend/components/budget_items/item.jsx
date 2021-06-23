@@ -41,7 +41,9 @@ class Item extends React.Component {
             "months" : "days";
 
         return item.start_date ?   
-            ( <p>every { item.recur_period } { recurUnit }</p>) :
+            ( <span className="item-recur-info">
+            every { item.recur_period } { recurUnit }
+            </span>) :
             null;
 
     }
@@ -50,14 +52,24 @@ class Item extends React.Component {
         const { item } = this.props;
 
         return (
-        <li>
-            <p>{ item.name }: ${item.amount} | { this.dateInfo() }
-            </p>
-            { this.recurrenceInfo() }
-            { item.start_date && item.end_date === null ? 
-                <button onClick={ this.handleStop }>Stop</button> :
-                    "" }
-            <button onClick={ this.handleDelete }>Delete</button> 
+        <li className="item">
+            <div>
+                <p className="item-info">
+                    { item.name } &mdash; ${item.amount}
+                </p>
+                <p className="item-date-info">
+                    { this.dateInfo() }
+                    { this.recurrenceInfo() }
+                </p>
+            </div>
+            <div className="item-buttons">
+                { item.start_date && item.end_date === null ? 
+                    <button onClick={ this.handleStop }>Stop</button> :
+                        "" }
+                <button 
+                    className="item-delete-button"
+                    onClick={ this.handleDelete }>Delete</button> 
+            </div>
         </li>
         );
     }

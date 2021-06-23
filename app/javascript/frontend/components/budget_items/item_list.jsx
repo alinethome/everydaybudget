@@ -32,17 +32,23 @@ class ItemList extends React.Component {
         } = this.props;
 
         return (
-            <div>
-                <ul>
-                    <a href="#" onClick={ this.handleClick("recurring") }>
+            <div className="item-list">
+                <ul className="item-list-type-menu">
+                    <a href="#" 
+                        className={this.state.recurDisplay == "recurring" ? 
+                                "item-list-type-menu-selected" : ""}
+                        onClick={ this.handleClick("recurring") }>
                         Recurring</a>
-                    <a href="#" onClick={ this.handleClick("non-recurring") }>
+                    <a href="#" 
+                        className={this.state.recurDisplay == "non-recurring" ? 
+                                "item-list-type-menu-selected" : ""}
+                        onClick={ this.handleClick("non-recurring") }>
                         Non-Recurring</a>
                 </ul>
 
                 { this.state.recurDisplay === "recurring" ? 
 
-                    <ul>
+                    <ul className="item-list-items">
                         { 
                             recurringItems.map((item) => {
                                 return(<Item key={ item.id } 
@@ -54,7 +60,7 @@ class ItemList extends React.Component {
                         }
                     </ul>
                     :
-                    <ul>
+                    <ul className="item-list-items">
                         { 
                             nonRecurringItems.map((item) => {
                                 return(<Item key={ item.id } 

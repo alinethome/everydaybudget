@@ -6,8 +6,10 @@ $primary-color-darker: #4627A0;
 $primary-color-dark: #340b86;
 $primary-color-light: #D1C4E9;
 $text-on-primary-dark: #FFF;
-$text-on-primary-light: #FFF;
+$text-on-primary-light: #000;
 $background: #FFF;
+$danger-color: #b73a89;
+$danger-color-light: #e8bad4;
 $test-color: #CCC;
 
 @mixin font($size, $weight, $letter-spacing) {
@@ -60,6 +62,9 @@ $test-color: #CCC;
 @mixin button {
     @include font(12px, 500, 0.25px);
     text-transform: uppercase;
+    padding: 10px 12px 8px 12px;
+    // border-radius: 5px;
+    cursor: pointer;
 }
 
 @mixin caption {
@@ -73,11 +78,8 @@ $test-color: #CCC;
 @mixin button-on-dark {
     @include button;
     color: $text-on-primary-dark;
-    padding: 8px 12px;
     background: $primary-color-darker;
     border: 1px solid $primary-color-light;
-    border-radius: 5px;
-    cursor: pointer;
 
     &:hover {
         border-color: #FFF;
@@ -88,15 +90,25 @@ $test-color: #CCC;
 @mixin button-on-light {
     @include button;
     color: $primary-color;
-    padding: 8px 12px;
     background: $background;
     border: 1px solid $primary-color-light;
-    border-radius: 5px;
-    cursor: pointer;
 
     &:hover {
         border-color: #FFF;
         background: $primary-color;
+        color: $text-on-primary-dark;
+    }
+}
+
+@mixin danger-button-on-light {
+    @include button;
+    color: $danger-color;
+    background: $background;
+    border: 1px solid $danger-color-light;
+
+    &:hover {
+        border-color: #FFF;
+        background: $danger-color;
         color: $text-on-primary-dark;
     }
 }
