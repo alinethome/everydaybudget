@@ -6,7 +6,6 @@
     display: flex;
     align-items: center;
     border-bottom: 1px solid $primary-color-light;
-    text-transform: uppercase;
 
     .item-date-info {
         @include caption;
