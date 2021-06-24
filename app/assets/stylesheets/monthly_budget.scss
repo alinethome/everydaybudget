@@ -1,0 +1,33 @@
+@import 'base';
+
+.monthly-budget {
+    margin-top: 32px;
+}
+
+.monthly-budget-item {
+    @include body1;
+    border-bottom: 1px solid $primary-color-light;
+    padding: 8px 16px;
+
+    .monthly-budget-item-day {
+        @include subtitle2;
+        display: inline-block;
+        width: 20px;
+        text-align: right;
+        margin-right: 8px;
+        color: $primary-color;
+    }
+
+    .monthly-budget-item-amount {
+        @include subtitle2;
+        margin-left: 8px;
+    }
+
+    .monthly-budget-item-amount-income {
+        color: $income-color;
+    }
+
+    .monthly-budget-item-amount-expense {
+        color: $expense-color;
+    }
+}

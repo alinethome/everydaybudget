@@ -6,8 +6,13 @@ const DayAndItem = ({ dayItemPair }) => {
     const sign = item.type === "income" ? "+" : "-";
 
     return (
-        <li>
-            {day}: {item.name} ({sign}${item.amount})
+        <li className="monthly-budget-item">
+            <span className="monthly-budget-item-day">{day}:</span>
+            <span className="monthly-budget-item-name">{item.name}</span>
+            <span className={`monthly-budget-item-amount 
+                monthly-budget-item-amount-${item.type}`}>
+                ({sign}${item.amount})
+            </span>
         </li>
     )};
 

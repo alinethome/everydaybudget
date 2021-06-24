@@ -37,10 +37,11 @@ class MonthlyBudget extends React.Component {
             nonRecurringByDay);
 
         return (
-            <ul>
+            <ul className="monthly-budget">
                 {
                     daysArray.map((dayItemPair, index) => (
-                        <DayAndItem key={`${index}-${dayItemPair[1].id}`}
+                        <DayAndItem 
+                            key={`${index}-${dayItemPair[1].id}`}
                             dayItemPair={dayItemPair} />
                     ))
                 }
