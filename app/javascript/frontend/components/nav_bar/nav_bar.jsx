@@ -6,14 +6,14 @@ const NavBar = ({ logout, currentUser }) => {
 
     if (currentUser) {
         navigation = (<ul>
-            <Link to="/">My Budget</Link>
+            <Link to="/">Today's Budget</Link>
             <Link to="/income">Manage Income</Link>
             <Link to="/expenses">Manage Expenses</Link>
             <Link to="/monthly">This Month</Link>
         </ul>);
 
     } else {
-        navigation = <ul></ul>;
+        navigation = <ul>EverydayBudget</ul>;
     }
 
     if (currentUser) {
