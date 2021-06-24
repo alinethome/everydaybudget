@@ -21,7 +21,7 @@ class UserForm extends React.Component {
         e.preventDefault();
         this.props.userAction(this.state)
             .then(() => this.props.history.push('/'), 
-            (error) => console.log(error));
+                (error) => console.log(error));
     }
 
     getToken() {
@@ -30,22 +30,23 @@ class UserForm extends React.Component {
 
     render() {
         return (
-            <form>
-                <h1>{ this.props.formTitle }</h1>
-                <label>Email:
-                    <input type="text" 
-                        value={ this.state.email }
-                        onChange={ this.handleInput('email') }/>
-                </label>
-                <label>Password:
-                    <input type="password"
-                        value={ this.state.password }
-                        onChange={ this.handleInput('password') }/>
-                </label>
-                <input type="submit" 
-                    value={ this.props.buttonText }
-                    onClick={ this.handleSubmit } />
-            </form>
+            <div class="user-form">
+                <h2>{ this.props.formTitle }</h2>
+                <form>
+                    <label for="user-form-email">Email:</label>
+                        <input id="user-form-email" type="text" 
+                            value={ this.state.email }
+                            onChange={ this.handleInput('email') }/>
+                    <label for="user-form-password">Password:</label>
+                        <input id="user-form-password" type="password"
+                            value={ this.state.password }
+                            onChange={ this.handleInput('password') }/>
+                    <button
+                        onClick={ this.handleSubmit } >
+                        { this.props.buttonText }
+                    </button>
+                </form>
+            </div>
         );
     }
 }

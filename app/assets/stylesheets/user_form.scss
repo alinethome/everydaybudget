@@ -1,0 +1,42 @@
+@import 'base';
+
+.user-form {
+    max-width: 320px;
+    margin: auto;
+
+    @include body2;
+
+    form {
+        margin-top: 24px;
+        border: 1px solid $primary-color-light;
+        border-radius: 7px;
+        padding: 32px 24px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    h2 {
+        @include h5;
+        color: $primary-color;
+        text-align: center;
+        margin-top: 32px;
+    }
+
+    button {
+        @include button-on-light;
+    }
+
+    label {
+        @include subtitle2;
+        color: $primary-color-darker;
+        font-size: 12px;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+    }
+
+    input {
+        @include form-select;
+        color: $text-on-primary-light;
+        margin-bottom: 32px;
+    }
+}

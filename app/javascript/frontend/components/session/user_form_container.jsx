@@ -5,7 +5,7 @@ import UserForm from './user_form.jsx';
 const mapStateToProps = (state, ownProps) => ({
     formTitle: ownProps.formType === "login" ?
     "Log In" :
-    "Sign Up for EverydayBudget",
+    "Sign Up",
     buttonText: ownProps.formType === "login" ? 
     "Log In!" :
     "Sign Up!"
