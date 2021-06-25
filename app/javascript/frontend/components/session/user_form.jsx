@@ -45,12 +45,12 @@ class UserForm extends React.Component {
 
     render() {
         return (
-            <div class="user-form">
+            <div className="user-form">
                 <h2>{ this.props.formTitle }</h2>
                 <form>
-                    <ul class="user-form-errors">
-                        { this.props.errors.map((error) => (
-                        <li>{error} </li>
+                    <ul className="user-form-errors">
+                        { this.props.errors.map((error, index) => (
+                        <li key={index}>{error} </li>
                         ))}
                     </ul>
 
