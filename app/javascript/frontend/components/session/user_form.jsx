@@ -9,6 +9,11 @@ class UserForm extends React.Component {
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.renderErrors = this.renderErrors.bind(this);
+    }
+
+    componentDidMount() {
+        this.clearErrors();
     }
 
     handleInput(type) {
@@ -20,12 +25,22 @@ class UserForm extends React.Component {
     handleSubmit(e) {
         e.preventDefault();
         this.props.userAction(this.state)
-            .then(() => this.props.history.push('/'), 
-                (error) => console.log(error));
+            .then(() => { 
+                this.props.history.push('/');
+                this.clearErrors();
+            }, this.renderErrors);
     }
 
     getToken() {
         return document.elementsByName('csrf-token')[0].content;
+    }
+
+    clearErrors() {
+        this.props.receiveErrors([]);
+    }
+
+    renderErrors(response) {
+        this.props.receiveErrors(response.responseJSON);
     }
 
     render() {
@@ -33,6 +48,12 @@ class UserForm extends React.Component {
             <div class="user-form">
                 <h2>{ this.props.formTitle }</h2>
                 <form>
+                    <ul class="user-form-errors">
+                        { this.props.errors.map((error) => (
+                        <li>{error} </li>
+                        ))}
+                    </ul>
+
                     <label for="user-form-email">Email:</label>
                         <input id="user-form-email" type="text" 
                             value={ this.state.email }
