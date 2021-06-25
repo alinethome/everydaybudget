@@ -22,6 +22,16 @@
         margin-top: 32px;
     }
 
+    .user-form-errors {
+        @include caption;
+        color: $danger-color;
+        margin-bottom: 12px;
+        
+        li {
+            margin-bottom: 2px;
+        }
+    }
+
     button {
         @include button-on-light;
     }
