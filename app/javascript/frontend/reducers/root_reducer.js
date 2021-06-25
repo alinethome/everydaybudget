@@ -2,10 +2,12 @@ import { combineReducers } from 'redux';
 import sessionReducer from './session_reducer.js';
 import entitiesReducer from './entities_reducer.js';
 import budgetReducer from './budget_reducer.js';
+import errorsReducer from './errors_reducer.js';
 
 export default combineReducers({
     session: sessionReducer,
     entities: entitiesReducer,
-    budget: budgetReducer
+    budget: budgetReducer,
+    errors: errorsReducer
 });
 
