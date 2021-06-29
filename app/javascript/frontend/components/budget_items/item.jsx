@@ -35,14 +35,24 @@ class Item extends React.Component {
         </span>);
     }
 
-    recurrenceInfo() {
+    recurUnit() {
         const { item } = this.props;
         const recurUnit = item.recur_unit_type === "MonthsUnitItem" ?
             "months" : "days";
 
+        if (item.recur_period == 1) {
+            return recurUnit.substring(0, recurUnit.length - 1);
+        } else {
+            return recurUnit;
+        }
+    }
+
+    recurrenceInfo() {
+        const { item } = this.props;
+
         return item.start_date ?   
             ( <span className="item-recur-info">
-            every { item.recur_period } { recurUnit }
+            every { item.recur_period } { this.recurUnit() }
             </span>) :
             null;
 
