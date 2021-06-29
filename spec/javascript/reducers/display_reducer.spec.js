@@ -16,17 +16,17 @@ describe('displayReducer', () => {
     })
 
     describe('given an action of the SET_ITEM_LIST_DISPLAY type', () => {
+        const actionForSettingToRecurring = { 
+            type: SET_ITEM_LIST_DISPLAY,
+            itemList: "recurring"
+        };
+
+        const actionForSettingToNonRecurring = { 
+            type: SET_ITEM_LIST_DISPLAY,
+            itemList: "non-recurring"
+        };
+
         test('returns a state with itemList set to the recur type', () => {
-            const actionForSettingToRecurring = { 
-                type: "SET_ITEM_LIST_DISPLAY",
-                itemList: "recurring"
-            };
-
-            const actionForSettingToNonRecurring = { 
-                type: "SET_ITEM_LIST_DISPLAY",
-                itemList: "non-recurring"
-            };
-
             expect(displayReducer(stateSetToNonRecurring,
                 actionForSettingToRecurring))
                 .toEqual(stateSetToRecurring);
@@ -34,7 +34,14 @@ describe('displayReducer', () => {
             expect(displayReducer(stateSetToRecurring,
                 actionForSettingToNonRecurring))
                 .toEqual(stateSetToNonRecurring);
+        });
 
+        test('does not mutate the initial state', () => {
+            const initialState = stateSetToRecurring;
+
+            expect(displayReducer(initialState,
+                actionForSettingToRecurring))
+                .not.toBe(initialState);
         });
 
     });
