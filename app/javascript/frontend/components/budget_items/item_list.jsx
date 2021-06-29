@@ -4,20 +4,19 @@ import Item from './item.jsx';
 class ItemList extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { recurDisplay: "recurring" };
-
         this.handleClick = this.handleClick.bind(this);
     }
 
     componentDidMount() {
         this.props.fetchRecurringItems();
         this.props.fetchNonRecurringItems();
+        this.props.setItemListDisplay('non-recurring');
     }
 
     handleClick(recurDisplay) {
         return (e) => { 
             e.preventDefault();
-            this.setState({ recurDisplay })
+            this.props.setItemListDisplay(recurDisplay);
         };
     }
 
@@ -28,25 +27,27 @@ class ItemList extends React.Component {
             updateRecurringItem,
             destroyRecurringItem,
             destroyNonRecurringItem,
-            updateNonRecurringItem
+            updateNonRecurringItem,
+            itemListDisplay
         } = this.props;
 
         return (
             <div className="item-list">
                 <ul className="item-list-type-menu">
                     <a href="#" 
-                        className={this.state.recurDisplay == "recurring" ? 
+                        className={ itemListDisplay === "recurring" ? 
                                 "item-list-type-menu-selected" : ""}
                         onClick={ this.handleClick("recurring") }>
                         Recurring</a>
                     <a href="#" 
-                        className={this.state.recurDisplay == "non-recurring" ? 
+                        className={ itemListDisplay ===
+                                "non-recurring" ? 
                                 "item-list-type-menu-selected" : ""}
                         onClick={ this.handleClick("non-recurring") }>
                         Non-Recurring</a>
                 </ul>
 
-                { this.state.recurDisplay === "recurring" ? 
+                { itemListDisplay === "recurring" ? 
 
                     <ul className="item-list-items">
                         { 
