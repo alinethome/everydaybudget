@@ -10,6 +10,7 @@ import ItemFormContainer from './budget_items/item_form_container.jsx';
 import ItemListContainer from './budget_items/item_list_container.jsx';
 import MonthlyBudgetContainer from 
 './monthly_budget/monthly_budget_container.jsx';
+import Description from './description/description.jsx';
 
 const Root = ({ store }) => (
     <Provider store={ store }>
@@ -28,6 +29,8 @@ const Root = ({ store }) => (
                     render={ () => <DailyBudgetDisplayContainer /> } />
                 <ProtectedRoute path='/monthly'
                     render={ () => <MonthlyBudgetContainer />} />
+                <AuthRoute path='/'
+                    render={ () => <Description /> } />
                 <AuthRoute path='/signup' 
                     render={ () => <UserFormContainer formType="signup" /> } />
                 <AuthRoute path='/login' 
