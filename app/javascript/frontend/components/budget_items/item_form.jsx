@@ -14,7 +14,6 @@ class ItemForm extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.clearForm = this.clearForm.bind(this);
-
     }
 
     handleChange(field) {
@@ -45,7 +44,8 @@ class ItemForm extends React.Component {
         };
 
         this.props.createRecurringItem(item)
-            .then(this.clearForm);
+            .then(this.clearForm)
+            .then(this.props.setItemListDisplay("recurring"));
     }
 
     submitNonRecurring() {
@@ -57,7 +57,8 @@ class ItemForm extends React.Component {
         };
 
         this.props.createNonRecurringItem(item)
-            .then(this.clearForm);
+            .then(this.clearForm)
+            .then(this.props.setItemListDisplay("non-recurring"));
     }
 
     clearForm() {
