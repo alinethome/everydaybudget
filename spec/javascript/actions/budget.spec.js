@@ -31,7 +31,7 @@ describe('fetchBudget', () => {
         );
     });
 
-    test('should call fetchBudget', () => {
+    test('should call getBudget', () => {
         const store = mockStore({ budget: {} });
 
         return store.dispatch(fetchBudget()).then(() => {
