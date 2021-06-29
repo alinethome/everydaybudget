@@ -1,9 +1,9 @@
 import React from 'react';
 
 const Description = () => (
-    <main>
+    <main className="description">
         <h1>
-            EveryDay Budget
+            EverydayBudget
         </h1>
 
         <p>A lightweight app for tracking your income and 
