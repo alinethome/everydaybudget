@@ -31,3 +31,11 @@
         color: $expense-color;
     }
 }
+
+.monthly-budget-item-heading {
+    .monthly-budget-item-day, .monthly-budget-item-item {
+        @include overline;
+        font-weight: 500;
+        color: $text-on-primary-light;
+    }
+}

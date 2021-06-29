@@ -38,6 +38,12 @@ class MonthlyBudget extends React.Component {
 
         return (
             <ul className="monthly-budget">
+                <li className="monthly-budget-item monthly-budget-item-heading">
+                    <span className="monthly-budget-item-day">Day</span>
+                    <span className="monthly-budget-item-item">
+                        Item
+                    </span>
+                </li>
                 {
                     daysArray.map((dayItemPair, index) => (
                         <DayAndItem 
