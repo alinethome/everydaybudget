@@ -7,10 +7,10 @@ describe('setItemListDisplay', () => {
             .toEqual(SET_ITEM_LIST_DISPLAY);
     })
 
-    test('it produces an action with the recur type that was passed', () => {
+    test('it produces an action with the list type that was passed', () => {
         const recurType = "recurring";
 
-        expect(setItemListDisplay("recurring").recurType)
+        expect(setItemListDisplay("recurring").itemList)
             .toEqual(recurType);
     })
 });
