@@ -15,8 +15,8 @@ class DailyBudgetForm extends React.Component {
 
     defaultTitle() {
         return this.props.type === 'expense' ? 
-            'some expense' :
-            'some income source';
+            'some one-time expense' :
+            'some one-time income';
     }
 
     handleInput(field) {
