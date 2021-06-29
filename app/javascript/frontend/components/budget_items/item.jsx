@@ -37,7 +37,7 @@ class Item extends React.Component {
 
     recurrenceInfo() {
         const { item } = this.props;
-        const recurUnit = item.recur_unit_type === "MonthsUnitType" ?
+        const recurUnit = item.recur_unit_type === "MonthsUnitItem" ?
             "months" : "days";
 
         return item.start_date ?   
