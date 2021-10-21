@@ -1,31 +1,13 @@
-# README
+# EverydayBudget
 
-* EverydayBudget is a simple montly budgeting application built on Rails and React.
+EverydayBudget is a simple monthly budgeting application built on Rails and React.
 
-# Key Features
+[Demo site!](https://everydaybudget.herokuapp.com/)
 
-* It allows for the simple entry of expenses and income.
-* It eases the cognitive load of budgeting by reducing the budget to 
+* The app works by allowing the user to record their income and expenses, using them to compute a budget for the day. 
+* Staying under budget will increase the daily budget for other days of the month. Going under it will decrease it. 
+* Reducing a month's budget to a single day reduces the cognitive load of budgeting. 
+* The app also allows the user to review expenses and sources of income for a particular month, and includes support for recurring expenses and one-time payments. 
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
 
-Things you may want to cover:
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
